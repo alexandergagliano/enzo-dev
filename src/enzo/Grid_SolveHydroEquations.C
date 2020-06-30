@@ -258,6 +258,56 @@ int grid::SolveHydroEquations(int CycleNumber, int NumberOfSubgrids,
       
     } // if(TestProblemData.GloverChemistryModel)
 
+    if (withWater)
+    {
+      /* Omukai (2005) water chemistry fields */
+      int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+      CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+      CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum,
+      O2HplusNum;
+
+      if (IdentifySpeciesFieldsChem(WaterNum, ONum, OHNum, O2Num, OplusNum,
+                                  OHplusNum, H2OplusNum, H3OplusNum, O2plusNum, CplusNum,
+                                  CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum,
+                                  CO2Num, CHplusNum,
+                                  CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum,
+                                  CH3plusNum, CH4plusNum, CH5plusNum, O2HplusNum) == FAIL)
+     {
+        ENZO_VFAIL("Error with Water Chemistry in IdentifySpeciesFieldsChem.");
+     }
+
+      colnum[NumberOfColours++] = WaterNum;
+      colnum[NumberOfColours++] = ONum;
+      colnum[NumberOfColours++] = OHNum;
+      colnum[NumberOfColours++] = O2Num;
+      colnum[NumberOfColours++] = OplusNum;
+      colnum[NumberOfColours++] = OHplusNum;
+      colnum[NumberOfColours++] = H2OplusNum;
+      colnum[NumberOfColours++] = H3OplusNum;
+      colnum[NumberOfColours++] = O2plusNum;
+      colnum[NumberOfColours++] = CplusNum;
+      colnum[NumberOfColours++] = CNum;
+      colnum[NumberOfColours++] = CHNum;
+      colnum[NumberOfColours++] = CH2Num;
+      colnum[NumberOfColours++] = CH3Num;
+      colnum[NumberOfColours++] = CH4Num;
+      colnum[NumberOfColours++] = CONum;
+      colnum[NumberOfColours++] = COplusNum;
+      colnum[NumberOfColours++] = CO2Num;
+
+      if (water_rates == 3){
+         colnum[NumberOfColours++] = CHplusNum;
+         colnum[NumberOfColours++] = CH2plusNum;
+         colnum[NumberOfColours++] = H3plusNum;
+         colnum[NumberOfColours++] = HCOplusNum;
+         colnum[NumberOfColours++] = HeHplusNum;
+         colnum[NumberOfColours++] = CH3plusNum;
+         colnum[NumberOfColours++] = CH4plusNum;
+         colnum[NumberOfColours++] = CH5plusNum;
+         colnum[NumberOfColours++] = O2HplusNum;
+      }
+
+    }
 
     /* Add Cosmic Ray Energy Density as a colour variable. */
     if(CRModel){

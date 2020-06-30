@@ -175,11 +175,40 @@ const field_type
   kphHM     = 99,
 
   /* Real and Imag of Wave Function */
-  RePsi = 101,
-  ImPsi = 102,
-  FDMDensity = 103,
+  RePsi = 100,
+  ImPsi = 101,
+  FDMDensity = 102,
 
-  FieldUndefined  = 104;
+  //new chemistry for Omukai's network
+  WaterDensity = 103,
+  ODensity = 104,
+  OHDensity = 105,
+  O2Density = 106,
+  OplusDensity = 107,
+  OHplusDensity = 108,
+  H2OplusDensity = 109,
+  H3OplusDensity = 110,
+  O2plusDensity = 111,
+  CplusDensity = 112,
+  CDensity = 113,
+  CHDensity = 114,
+  CH2Density = 115,
+  CH3Density = 116,
+  CH4Density = 117,
+  CODensity = 118,
+  COplusDensity = 119,
+  CO2Density = 120,
+  CHplusDensity = 121,
+  CH2plusDensity = 122,
+  H3plusDensity = 123,
+  HCOplusDensity = 124,
+  HeHplusDensity = 125,
+  CH3plusDensity = 126,
+  CH4plusDensity = 127,
+  CH5plusDensity = 128,
+  O2HplusDensity = 129,
+
+  FieldUndefined  = 130;
 
 /*
 enum field_type {Density, TotalEnergy, InternalEnergy, Pressure,

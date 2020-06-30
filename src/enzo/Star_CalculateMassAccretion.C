@@ -54,6 +54,11 @@ int Star::CalculateMassAccretion(float &BondiRadius, float &density)
   int DensNum, GENum, TENum, Vel1Num, Vel2Num, Vel3Num;
   int DeNum, HINum, HIINum, HeINum, HeIINum, HeIIINum, HMNum, H2INum, H2IINum,
       DINum, DIINum, HDINum;
+
+  int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+  CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+  CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum,
+  CH5plusNum, O2HplusNum;
     
   /* Find fields: density, total energy, velocity1-3. */
 
@@ -71,6 +76,17 @@ int Star::CalculateMassAccretion(float &BondiRadius, float &density)
 	== FAIL) {
       ENZO_FAIL("Error in grid->IdentifySpeciesFields.\n");
     }
+
+  if (withWater)
+    if (CurrentGrid->IdentifySpeciesFieldsChem(WaterNum, ONum, OHNum, O2Num, OplusNum,
+                                  OHplusNum, H2OplusNum, H3OplusNum, O2plusNum, CplusNum,
+                                  CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+                                  CHplusNum, CH2plusNum, H3plusNum, HCOplusNum,
+                                  HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum,
+                                  O2HplusNum) == FAIL)
+     {
+        ENZO_VFAIL("Error in grid->IdentifySpeciesFieldsChem.\n");
+     }
 
   int igrid[MAX_DIMENSION], dim, index, size = 1;
   float c_s, mu, number_density, old_mass, delta_mass, mdot;

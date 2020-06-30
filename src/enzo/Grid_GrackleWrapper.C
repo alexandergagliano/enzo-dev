@@ -48,6 +48,11 @@ int grid::GrackleWrapper()
   int DeNum, HINum, HIINum, HeINum, HeIINum, HeIIINum, HMNum, H2INum, H2IINum,
       DINum, DIINum, HDINum, DensNum, GENum, Vel1Num, Vel2Num, Vel3Num, TENum;
 
+  int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+      CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+      CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum,
+      O2HplusNum;
+
   double dt_cool = dtFixed;
 #ifdef TRANSFER
   dt_cool = (grackle_data->radiative_transfer_intermediate_step == TRUE) ? dtPhoton : dtFixed;
@@ -87,6 +92,30 @@ int grid::GrackleWrapper()
 		      HMNum, H2INum, H2IINum, DINum, DIINum, HDINum) == FAIL) {
       ENZO_FAIL("Error in grid->IdentifySpeciesFields.\n");
     }
+
+    WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+    CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+    CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum,
+    O2HplusNum = 0;
+
+    if (withWater)
+      if (this->IdentifySpeciesFieldsChem(WaterNum, ONum, OHNum, O2Num, OplusNum,
+                                  OHplusNum, H2OplusNum, H3OplusNum, O2plusNum, CplusNum,
+                                  CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum,
+                                  CO2Num, CHplusNum, CH2plusNum, H3plusNum, HCOplusNum,
+                                  HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum,
+                                  O2HplusNum) == FAIL)
+      {
+        ENZO_VFAIL("In Grid_GrackleWrapper.C, Water=%"ISYM", OH=%"ISYM", "
+                    "O2=%"ISYM", Oplus=%"ISYM", OHplus=%"ISYM", H2Oplus=%"ISYM", "
+                    "H3Oplus=%"ISYM", O2plus=%"ISYM", Cplus=%"ISYM", CH=%"ISYM", "
+                    "CH2=%"ISYM", CH3=%"ISYM", CH4=%"ISYM", CO=%"ISYM", "
+                    "COplus=%"ISYM", CO2=%"ISYM", C=%"ISYM", O=%"ISYM"\n",
+                    WaterNum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum,
+                    H3OplusNum, O2plusNum, CplusNum, CHNum, CH2Num, CH3Num,
+                    CH4Num, CONum, COplusNum, CO2Num, CNum, ONum);
+
+     }
  
   /* Get easy to handle pointers for each variable. */
  
@@ -227,7 +256,7 @@ int grid::GrackleWrapper()
   my_fields.HeII_density    = BaryonField[HeIINum];
   my_fields.HeIII_density   = BaryonField[HeIIINum];
   my_fields.e_density       = BaryonField[DeNum];
-
+  
   my_fields.HM_density      = BaryonField[HMNum];
   my_fields.H2I_density     = BaryonField[H2INum];
   my_fields.H2II_density    = BaryonField[H2IINum];
@@ -235,6 +264,41 @@ int grid::GrackleWrapper()
   my_fields.DI_density      = BaryonField[DINum];
   my_fields.DII_density     = BaryonField[DIINum];
   my_fields.HDI_density     = BaryonField[HDINum];
+
+  /* Omukai (2005) water chemistry fields */
+  if (withWater){
+      my_fields.Water_density   = BaryonField[WaterNum];
+      my_fields.O_density       = BaryonField[ONum];
+      my_fields.OH_density      = BaryonField[OHNum];
+      my_fields.O2_density      = BaryonField[O2Num];
+      my_fields.Oplus_density   = BaryonField[OplusNum];
+      my_fields.OHplus_density  = BaryonField[OHplusNum];
+      my_fields.H2Oplus_density = BaryonField[H2OplusNum];
+      my_fields.H3Oplus_density = BaryonField[H3OplusNum];
+      my_fields.O2plus_density  = BaryonField[O2plusNum];
+      my_fields.Cplus_density   = BaryonField[CplusNum];
+      my_fields.C_density       = BaryonField[CNum];
+      my_fields.CH_density      = BaryonField[CHNum];
+      my_fields.CH2_density     = BaryonField[CH2Num];
+      my_fields.CH3_density     = BaryonField[CH3Num];
+      my_fields.CH4_density     = BaryonField[CH4Num];
+      my_fields.CO_density      = BaryonField[CONum];
+      my_fields.COplus_density  = BaryonField[COplusNum];
+      my_fields.CO2_density     = BaryonField[CO2Num];
+
+      // For Bialy species
+      if (water_rates == 3){
+        my_fields.CHplus_density  = BaryonField[CHplusNum];
+        my_fields.CH2plus_density = BaryonField[CH2plusNum];
+        my_fields.H3plus_density  = BaryonField[H3plusNum];
+        my_fields.HCOplus_density = BaryonField[HCOplusNum];
+        my_fields.HeHplus_density = BaryonField[HeHplusNum];
+        my_fields.CH3plus_density = BaryonField[CH3plusNum];
+        my_fields.CH4plus_density = BaryonField[CH4plusNum];
+        my_fields.CH5plus_density = BaryonField[CH5plusNum];
+        my_fields.O2Hplus_density = BaryonField[CH5plusNum];
+      }
+  }
 
   my_fields.metal_density   = MetalPointer;
 

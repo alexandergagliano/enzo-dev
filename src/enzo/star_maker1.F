@@ -259,7 +259,9 @@ c
      &                      d1, x1, v1, t1, sn_param, m_eject, yield,
      &                      npart, xstart, ystart, zstart, ibuff,
      &                      xp, yp, zp, up, vp, wp,
-     &                      mp, tdp, tcp, metalf, justburn)
+     &                      mp, tdp, tcp, metalf, justburn, 
+     &                      iwater, oo, cc)
+
 c
 c  RELEASES "STAR" PARTICLE ENERGY
 c
@@ -297,10 +299,12 @@ c    npart    - particle array size specified by calling routine
 c    sn_param - fraction of stellar rest mass that goes to feedback
 c    m_eject  - fraction of stellar mass ejected back to gas
 c    yield    - fraction of stellar mass that is converted to metals
+c    ofrac, cfrac -- fraction of metal ejecta which is oxygen or carbon
 c
 c  OUTPUTS:
 c    d,u,v,w,ge,e - modified field
 c    justburn     - time-weighted mass of star formation (code units)
+c    oo, cc     - oxygen and carbon densities
 c
 c
 c-----------------------------------------------------------------------
@@ -310,7 +314,8 @@ c-----------------------------------------------------------------------
 c
 c  Arguments
 c
-      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod
+      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod,
+     &          iwater
       R_PREC   d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC   u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
       R_PREC   r(nx,ny,nz), metal(nx,ny,nz), ge(nx,ny,nz)
@@ -320,13 +325,16 @@ c
       R_PREC   xp(npart), yp(npart), zp(npart)
       R_PREC   up(npart), vp(npart), wp(npart)
       R_PREC  mp(npart), tdp(npart), tcp(npart), metalf(npart)
+      R_PREC   cc(nx, ny, nz), oo(nx, ny, nz)
+
 c
 c  Locals
 c    (msolar_e51 is one solar rest mass energy divided by 10^51 erg)
 c
       INTG_PREC i, j, k, n
       R_PREC mform, tfactor, energy, sn_param, msolar_e51,
-     &     m_eject, yield, minitial, xv1, xv2, dratio
+     &     m_eject, yield, minitial, xv1, xv2, dratio, 
+     &     ofrac, cfrac
       parameter (msolar_e51 = 1800._RKIND)
 c      parameter (sn_param = 4e-6)    ! this seems a bit high
 c      parameter (m_eject = 0.3, yield = 0.02)
@@ -336,6 +344,10 @@ c
 c     Loop over particles
 c
 c      write(6,*) 'star_feedback2: start'
+
+      ofrac = 0.553
+      cfrac = 0.228
+
       do n=1, npart
          if (tcp(n) .gt. 0 .and. mp(n) .gt. 0) then
 c
@@ -416,6 +428,31 @@ c     &              / (d(i,j,k)+mform*m_eject)  ! metal is a fraction
                metal(i,j,k) = (metal(i,j,k)*d(i,j,k) + mform * 
      &              (yield * (1._RKIND-metalf(n)) + m_eject *metalf(n)))
      &              / (d(i,j,k)+mform*m_eject)  ! metal is a fraction
+
+c              Metal enrichment for Omukai (2005) chemical
+c              network. oo, cc are number densities in cgs
+c              units, NOT code units. 
+
+c              First convert to mass density
+               if (iwater .eq. 1) then
+
+                  oo(i,j,k) = dble(oo(i,j,k)*16.0)/(6.022D23)
+                  cc(i,j,k) = dble(cc(i,j,k)*12.0)/(6.022D23)
+
+c                 Convert enrichment to mass density, add
+                  oo(i,j,k) = oo(i,j,k) +
+     &                      ofrac*mform*dble(d1)*
+     &              (yield * (1._RKIND-metalf(n)) + m_eject *metalf(n))
+c
+                  cc(i,j,k) = cc(i,j,k) +
+     &                      cfrac*mform*dble(d1)*
+     &              (yield * (1._RKIND-metalf(n)) + m_eject *metalf(n))
+c
+c                 Convert back to number density
+c
+                  oo(i,j,k) = dble(oo(i,j,k)/16.0)*(6.022D23)
+                  cc(i,j,k) = dble(cc(i,j,k)/12.0)*(6.022D23)
+               endif
 c
             endif
 c

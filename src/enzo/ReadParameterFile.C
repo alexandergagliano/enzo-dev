@@ -604,6 +604,11 @@ int ReadParameterFile(FILE *fptr, TopGridData &MetaData, float *Initialdt)
     ret += sscanf(line, "H2OpticalDepthApproximation = %"ISYM, &H2OpticalDepthApproximation);
     ret += sscanf(line, "ThreeBodyRate = %"ISYM, &ThreeBodyRate);
     ret += sscanf(line, "H2FormationOnDust = %"ISYM, &H2FormationOnDust);
+    ret += sscanf(line, "withWater = %"ISYM, &withWater);
+    ret += sscanf(line, "water_rates = %"ISYM, &water_rates);
+    ret += sscanf(line, "water_only = %"ISYM, &water_only);
+    ret += sscanf(line, "crx_ionization = %"ISYM, &crx_ionization);
+
     if (sscanf(line, "CloudyCoolingGridFile = %s", dummy) == 1) {
       CloudyCoolingData.CloudyCoolingGridFile = dummy;
       ret++;

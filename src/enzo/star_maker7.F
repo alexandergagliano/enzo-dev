@@ -328,7 +328,7 @@ c
      &                      npart, xstart, ystart, zstart, ibuff, level,
      &                      xp, yp, zp, up, vp, wp,
      &                      mp, tdp, tcp, metalf, type, justburn, 
-     &                      ctype, mbhradius)
+     &                      ctype, mbhradius, iwater, oo, cc)
 c
 c  RELEASES "STAR" PARTICLE ENERGY, MASS AND METALS
 c
@@ -362,6 +362,7 @@ c    ibuff    - number of buffer zones at each end of grid
 c    idual    - dual energy flag
 c    imetal   - metallicity flag (0 - none, 1 - yes)
 c    imethod  - hydro method (0 - PPMDE, 1 - PPMLR, 2 - ZEUS)
+c    iwater   - flag for Omukai (2005) chemistry network
 c    level - current level of refinement
 c
 c    x/y/z start - starting position of grid origin
@@ -375,12 +376,14 @@ c    npart    - particle array size specified by calling routine
 c    sn_param - fraction of stellar rest mass that goes to feedback
 c    m_eject  - fraction of stellar mass ejected back to gas
 c    yield    - fraction of stellar mass that is converted to metals
+c    ofrac, cfrac -- fraction of metal ejecta which is oxygen or carbon
 c    type  - particle types (currently in the cell)
 c    ctype - MBHParticleType
 c
 c  OUTPUTS:
 c    d,u,v,w,ge,e - modified field
 c    justburn     - time-weighted mass of star formation (code units)
+c    oo, cc     - oxygen and carbon densities
 c
 c
 c-----------------------------------------------------------------------
@@ -391,6 +394,7 @@ c
 c  Arguments
 c
       INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod, level
+      INTG_PREC iwater
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
       R_PREC    r(nx,ny,nz), metal(nx,ny,nz), ge(nx,ny,nz)
@@ -401,6 +405,7 @@ c
       R_PREC    up(npart), vp(npart), wp(npart)
       R_PREC    mp(npart), tdp(npart), tcp(npart), metalf(npart)
       INTG_PREC type(npart)
+      R_PREC    cc(nx, ny, nz), oo(nx, ny, nz)
       INTG_PREC ctype
 c
 c  Locals
@@ -408,7 +413,8 @@ c    (msolar_e51 is one solar rest mass energy divided by 10^51 erg)
 c
       INTG_PREC i, j, k, n
       R_PREC mform, tfactor, energy, sn_param, msolar_e51,
-     &     m_eject, yield, minitial, xv1, xv2, dratio
+     &     m_eject, yield, minitial, xv1, xv2, dratio,
+     &     ofrac, cfrac
       parameter (msolar_e51 = 1800._RKIND)
 c
 #define NO_KINETIC_FEEDBACK  
@@ -437,6 +443,10 @@ c
 c     Loop over particles
 c
 c      write(6,*) 'star_feedback7: start'
+
+      ofrac = 0.553
+      cfrac = 0.228
+
       do n=1, npart
          if (tcp(n) .gt. 0 .and. mp(n) .gt. 0 .and. type(n) .eq. 2) then
 c
@@ -554,6 +564,34 @@ c
      &                 (yield * (1._RKIND-metalf(n)) + m_eject * 
      &                 metalf(n))) / (d(i,j,k)+mform*m_eject)  ! metal is a fraction
 c
+c                 Metal enrichment for Omukai (2005) chemical 
+c                 network. oo, cc are number densities in cgs
+c                 units, NOT code units.
+c
+c                 First convert to mass density
+                  if (iwater .eq. 1) then
+
+                    oo(i,j,k) = dble(oo(i,j,k)*16.0)/
+     &                          (6.022D23)
+                    cc(i,j,k) = dble(cc(i,j,k)*12.0)/
+     &                          (6.022D23)
+
+c                   Convert enrichment to mass density, add
+                    oo(i,j,k) = oo(i,j,k) + ofrac*dble(d1)*
+     &                 (mform *
+     &                 (yield * (1._RKIND-metalf(n)) + m_eject *
+     &                 metalf(n)))
+                    cc(i,j,k) = cc(i,j,k) + cfrac*dble(d1)*
+     &                 (mform *
+     &                 (yield * (1._RKIND-metalf(n)) + m_eject *
+     &                 metalf(n)))
+
+c                   Convert back to number density
+                    oo(i,j,k) = dble(oo(i,j,k) /  16.0)
+     &                          *(6.022D23)
+                    cc(i,j,k) = dble(cc(i,j,k) / 12.0)
+     &                          *(6.022D23)
+                   endif
                endif
 c
 c              Mass and momentum feedback
@@ -665,6 +703,43 @@ c
      &                  -metalf(n)) + m_eject * metalf(n))) / 
      &                  (d(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) + 
      &                  1._RKIND/7._RKIND * mform * m_eject)  ! metal is a fraction
+c             
+c                    Metal enrichment for Omukai (2005) chemical
+c                    network. oo, cc are number densities in cgs
+c                    units, NOT code units.
+                     if (iwater .eq. 1) then
+c
+c                       First convert to mass density
+                        oo(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) =
+     &                       oo(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) *
+     &                       16.0/6.022d23
+                        cc(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) =
+     &                       cc(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) *
+     &                       12.0/6.022d23
+
+c                       Convert enrichment to mass density, add 
+                        oo(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) =
+     &                        metal(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn))
+     &                        *
+     &                       (d(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) +
+     &                       1._RKIND/7._RKIND * mform * m_eject)
+     &                       * dble(d1)
+
+                        cc(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) =
+     &                        metal(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn))
+     &                        *
+     &                       (d(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) +
+     &                       1._RKIND/7._RKIND * mform * m_eject)
+     &                       * dble(d1)
+
+c                       convert back to number density
+                        oo(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) =
+     &                       oo(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) /
+     &                       16.0*6.022d23
+                        cc(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) =
+     &                       cc(i+ind_x(nn),j+ind_y(nn),k+ind_z(nn)) /
+     &                       12.0*6.022d23
+                     endif
 c
                   endif
 c

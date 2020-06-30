@@ -297,7 +297,8 @@ c
      &                      npart, xstart, ystart, zstart, ibuff,
      &                      xp, yp, zp, up, vp, wp,
      &                      mp, tdp, tcp, metalf, type, justburn,
-     &                      crmodel, crfeedback, cr )
+     &                      crmodel, crfeedback, cr, iwater, oo, cc )
+
 
 c
 c  RELEASES "STAR" PARTICLE ENERGY, MASS AND METALS
@@ -332,6 +333,7 @@ c    ibuff    - number of buffer zones at each end of grid
 c    idual    - dual energy flag
 c    imetal   - metallicity flag (0 - none, 1 - yes)
 c    imulti_metals - flag to use multi metals zfield 1 and 2
+c    iwater - flag for Omukai (2005) chemistry network
 c    imethod  - hydro method (0 - PPMDE, 1 - PPMLR, 2 - ZEUS)
 c    distrad  - feedback distribution radius in cells
 c    diststep - distance in walking steps to deposit feedback
@@ -348,11 +350,13 @@ c    npart    - particle array size specified by calling routine
 c    sn_param - fraction of stellar rest mass that goes to feedback
 c    m_eject  - fraction of stellar mass ejected back to gas
 c    yield    - fraction of stellar mass that is converted to metals
+c    ofrac, cfrac - fraction of metal ejecta which is oxygen or carbon
 c    type     - particle type
 c
 c  OUTPUTS:
 c    d,u,v,w,ge,e - modified field
 c    justburn     - time-weighted mass of star formation (code units)
+c    oo, cc     - oxygen and carbon densities
 c
 c
 c-----------------------------------------------------------------------
@@ -363,7 +367,7 @@ c
 c  Arguments
 c
       INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, 
-     &      imulti_metals, imethod,
+     &      imulti_metals, imethod, iwater,
      &      distrad, diststep, distcells
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
@@ -377,6 +381,7 @@ c
       R_PREC    up(npart), vp(npart), wp(npart)
       R_PREC    mp(npart), tdp(npart), tcp(npart), metalf(npart)
       INTG_PREC type(npart)
+      R_PREC    cc(nx, ny, nz), oo(nx, ny, nz)
       INTG_PREC crmodel
       R_PREC cr(nx,ny,nz)
       R_PREC crfeedback
@@ -387,7 +392,7 @@ c
       INTG_PREC i, j, k, n, ic, jc, kc, stepk, stepj, cellstep
       R_PREC mform, tfactor, energy, sn_param, msolar_e51,
      &     m_eject, yield, minitial, xv1, xv2, dratio,
-     &     distmass
+     &     distmass, cfrac, ofrac
       parameter (msolar_e51 = 1800._RKIND)
 c
 c-----------------------------------------------------------------------
@@ -533,6 +538,34 @@ c
                            if (imulti_metals .eq. 1) then
                               zfield1(ic,jc,kc) = metal(ic,jc,kc)
                               zfield2(ic,jc,kc) = metal(ic,jc,kc)
+                           endif
+
+c                          Metal enrichment for Omukai (2005) chemical network. oo,
+c                          cc are number densities in cgs units, NOT code units.
+
+c                          First convert to mass density
+                           if (iwater .eq. 1) then
+
+                              oo(ic,jc,kc) = dble(oo(ic,jc,kc)*16.0)
+     &                               /(6.022D23)
+                              cc(ic,jc,kc) = dble(cc(ic,jc,kc)*12.0)
+     &                               /(6.022D23)
+
+c                             Convert enrichment to mass density, add
+                              oo(ic,jc,kc) = oo(ic,jc,kc) +
+     &                           ofrac*dble(d1)*((mform / distcells) *
+     &                            (yield * (1._RKIND-metalf(n)) +
+     &                            m_eject * metalf(n)))
+                              cc(ic,jc,kc) = cc(ic,jc,kc) +
+     &                           cfrac*dble(d1)*((mform / distcells) *
+     &                            (yield * (1._RKIND-metalf(n)) +
+     &                            m_eject * metalf(n)))
+
+c                             Convert back to number density
+                              oo(ic,jc,kc) = dble(oo(ic,jc,kc)/16.0)
+     &                              *(6.022D23)
+                              cc(ic,jc,kc) = dble(cc(ic,jc,kc)/12.0)
+     &                              *(6.022D23)
                            endif
 c
                         endif

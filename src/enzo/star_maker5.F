@@ -265,7 +265,8 @@ c
      &     d1, x1, v1, t1, yield,
      &     npart, xstart, ystart, zstart, ibuff,
      &     xp, yp, zp, up, vp, wp,
-     &     mp, tdp, tcp, metalf, type)
+     &     mp, tdp, tcp, metalf, type, iwater, oo, cc)
+
 c
 c  RELEASES "STAR" PARTICLE ENERGY, MASS AND METALS
 c
@@ -293,6 +294,7 @@ c    ibuff    - number of buffer zones at each end of grid
 c    idual    - dual energy flag
 c    imetal   - metallicity flag (0 - none, 1 - yes)
 c    imethod  - hydro method (0 - PPMDE, 1 - PPMLR, 2 - ZEUS)
+c    iwater   - flag for Omukai (2005) chemistry network
 c
 c    x/y/z start - starting position of grid origin
 c    xp,yp,zp - positions of created particles
@@ -301,11 +303,13 @@ c    mp       - mass of new particles
 c    tdp      - dynamical time of zone in which particle created
 c    tcp      - creation time of particle (-1 if not a star particle)
 c    metalf   - star particle metal fraction
+c    ofrac, cfrac -- fraction of metal ejecta which is oxygen or carbon
 c    npart    - particle array size specified by calling routine
 c    yield    - fraction of stellar mass that is converted to metals
 c
 c  OUTPUTS:
 c    d,u,v,w,ge,e - modified field
+c    oo, cc     - oxygen and carbon densities
 c
 c
 c-----------------------------------------------------------------------
@@ -315,7 +319,8 @@ c-----------------------------------------------------------------------
 c
 c  Arguments
 c
-      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod
+      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod,
+     &          iwater
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
       R_PREC    r(nx,ny,nz), metal(nx,ny,nz), ge(nx,ny,nz)
@@ -326,6 +331,7 @@ c
       R_PREC    up(npart), vp(npart), wp(npart)
       R_PREC    mp(npart), tdp(npart), tcp(npart), metalf(npart)
       INTG_PREC type(npart)
+      R_PREC    cc(nx, ny, nz), oo(nx, ny, nz)
 c
 c  Locals
 c    (msolar_e51 is one solar rest mass energy divided by 10^51 erg)
@@ -333,13 +339,15 @@ c
       INTG_PREC i, j, k, n
       R_PREC mform, tfactor, energy, sn_param, msolar_e51,
      &     yield, minitial, xv1, xv2, dratio, sqrtepssn,
-     &     beta
+     &     beta, ofrac, cfrac
       parameter (msolar_e51 = 1800._RKIND, 
      &     sqrtepssn=2.e24_RKIND, beta=0.1_RKIND)
 
 c    Basically calculate some of the same stuff from above.
 c    Dump it all into thermal making sure to take care of
 c    energy formalisms.
+      ofrac = 0.553
+      cfrac = 0.228
 
       do n=1, npart
          if(tcp(n) .eq. t .and. mp(n) .gt. 0 .and. type(n) .eq. 2) then
@@ -365,6 +373,29 @@ c
 c	    Metal Feedback
             metal(i,j,k) = metal(i,j,k) +
      &            (1._RKIND-beta)*yield*mp(n)/d(i,j,k)		!Eq(40)
+
+c           Metal enrichment for Omukai (2005) chemical
+c           network. oo, cc are number densities in cgs units,
+c           NOT code units.
+
+c           First convert to mass density
+            if (iwater .eq. 1) then
+
+                oo(i,j,k) = dble(oo(i,j,k)*16.0)/(6.022D23)
+                cc(i,j,k) = dble(cc(i,j,k)*12.0)/(6.022D23)
+
+c               Convert enrichment to mass density, add
+                oo(i,j,k) = oo(i,j,k) +
+     &                      ofrac*dble(d1)*(1._RKIND-beta)*yield*mp(n)
+                cc(i,j,k) = cc(i,j,k) +
+     &                      cfrac*dble(d1)*(1._RKIND-beta)*yield*mp(n)
+
+c               Convert back to number density
+                oo(i,j,k) = dble(oo(i,j,k) /  16.0)
+     &                      *(6.022D23)
+                cc(i,j,k) = dble(cc(i,j,k) /  12.0)
+     &                      *(6.022D23)
+            endif
 
             energy = sqrtepssn*mp(n)/SolarMass/v1/v1/d(i,j,k)  
             energy = energy*sqrtepssn    ! this is due to floating-point issues (BWO)

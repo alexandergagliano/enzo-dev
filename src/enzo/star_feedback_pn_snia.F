@@ -12,7 +12,9 @@ c
      &                      npart, xstart, ystart, zstart, ibuff,
      &                      xp, yp, zp, up, vp, wp,
      &                      mp, tdp, tcp, metalf, type, justburn,
-     &                      iPN, imetalSNIa, metalSNIa)
+     &                      iPN, imetalSNIa, metalSNIa, iwater, oo,
+     &                      cc)
+
 
 c
 c  RELEASES "STAR" PARTICLE ENERGY, MASS AND METALS
@@ -57,6 +59,8 @@ c    ibuff    - number of buffer zones at each end of grid
 c    idual    - dual energy flag
 c    imetal   - metallicity flag (0 - none, 1 - yes)
 c    imethod  - hydro method (0 - PPMDE, 1 - PPMLR, 2 - ZEUS)
+c    iwater   - flag for Omukai (2005) chemistry network
+c    ofrac, cfrac - fraction of metal ejecta which is oxygen or carbon
 c
 c    x/y/z start - starting position of grid origin
 c    xp,yp,zp - positions of created particles
@@ -80,6 +84,7 @@ c
 c  OUTPUTS:
 c    d,u,v,w,ge,e - modified field
 c    justburn     - time-weighted mass of star formation (code units)
+c    oo, cc     - oxygen and carbon densities
 c
 c
 c-----------------------------------------------------------------------
@@ -90,10 +95,11 @@ c
 c  Arguments
 c
       INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod,
-     &      distrad, diststep, distcells, imetalSNIa, iPN
+     &      distrad, diststep, distcells, imetalSNIa, iPN, iwater
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
       R_PREC    r(nx,ny,nz), metal(nx,ny,nz), ge(nx,ny,nz)
+      R_PREC    cc(nx, ny, nz), oo(nx, ny, nz)
       R_PREC    dt, dx, z
       R_PREC    d1, x1, v1, t1, justburn
       P_PREC xstart, ystart, zstart, t
@@ -110,7 +116,7 @@ c
       INTG_PREC i, j, k, n, ic, jc, kc, stepk, stepj, cellstep
       R_PREC mform, tfactor, energy, sn_param, msolar_e51,
      &     m_eject, yield, minitial, xv1, xv2, dratio,
-     &     distmass, delta_z
+     &     distmass, delta_z, ofrac, cfrac
       parameter (msolar_e51 = 1800._RKIND)
 c     TSK variables for stellar feedback fitting formula      
       R_PREC EdotSNII, EdotSNIa, EdotPN
@@ -136,6 +142,9 @@ c      write(6,*) 'star_feedback2: start'
 c
 c     Conversion from mass units to solar masses
 c
+      ofrac = 0.553
+      cfrac = 0.228
+
       do n=1, npart
          if (tcp(n) .gt. 0 .and. mp(n) .gt. 0 .and.
      &        (type(n) .eq. 2 .or. type(n) .eq. 7)) then
@@ -308,6 +317,34 @@ c
                      u(ic,jc,kc) = u(ic,jc,kc)/d(ic,jc,kc)
                      v(ic,jc,kc) = v(ic,jc,kc)/d(ic,jc,kc)
                      w(ic,jc,kc) = w(ic,jc,kc)/d(ic,jc,kc)
+
+
+c                    Metal enrichment for Omukai (2005) chemical
+c                    network. oo, cc are number densities in cgs
+c                    units, NOT code units.
+c
+c                    First convert to mass density
+                     if (iwater .eq. 1) then
+
+                        oo(ic,jc,kc) = dble(oo(ic, jc, kc) * 16.0)/
+     &                                 (6.022D23)
+                        cc(ic,jc,kc) = dble(cc(ic, jc, kc) * 12.0)/
+     &                                 (6.022D23)
+
+c                       Convert enrichment to mass density, add
+                        oo(ic,jc,kc) = oo(ic,jc,kc) +
+     &                     (delta_z*dble(d1))*ofrac
+                       cc(ic,jc,kc) = cc(ic,jc,kc) +
+     &                     (delta_z*dble(d1))*cfrac
+
+c                       Convert back to number density
+                       oo(ic,jc,kc) = dble(oo(ic,jc,kc) / 16.0)*
+     &                                 (6.022D23)
+                        cc(ic,jc,kc) = dble(cc(ic,jc,kc) / 12.0)*
+     &                                 (6.022D23)
+                     endif
+
+
 c
 c           If te is really total energy (and it is unless imethod=2),
 c             then just set this value

@@ -246,35 +246,38 @@ c     &               delf1new,delf2new,delf3new,s
                s = delf1new+delf2new+delf3new
                if (nneg .eq. 0 .and. 
      &             (fbar+s .le. 0.0 .or. fbar-s .le. 0.0)) then
-                   write(6,*) 'abc',delf0,sprime,chi1,chi2,chi3,
-     &               delf1,delf2,delf3,fbar,delf1new+delf2new+delf3new,
-     &               delf1new,delf2new,delf3new,s,work(i,j,k),
-     &               work(i+1,j+1,k+1),
-     &               work(i+1,j,k), work(i,j+1,k+1), work(i,j+1,k),
-     &               work(i+1,j,k+1), work(i,j,k+1), work(i+1,j+1,k)
-                   write(6,*) i,j,k,pdim1,pdim2,pdim3,dim1,dim2,dim3,
-     &               end1,end2,end3,refine1,refine2,refine3,
-     &               pstart1,pstart2,pstart3
-                   write(6,*) 
-     &                   parent(pstart1+i-1, pstart2+j-1, pstart3+k-1),
-     &                   parent(pstart1+i-1, pstart2+j-1, pstart3+k  ),
-     &                   parent(pstart1+i-1, pstart2+j  , pstart3+k-1),
-     &                   parent(pstart1+i-1, pstart2+j  , pstart3+k  ),
-     &                   parent(pstart1+i  , pstart2+j-1, pstart3+k-1),
-     &                   parent(pstart1+i  , pstart2+j-1, pstart3+k  ),
-     &                   parent(pstart1+i  , pstart2+j  , pstart3+k-1),
-     &                   parent(pstart1+i  , pstart2+j  , pstart3+k  )
-                   write(6,*) 
-     &                   parent(pstart1+i  , pstart2+j  , pstart3+k  ),
-     &                   parent(pstart1+i  , pstart2+j  , pstart3+k+1),
-     &                   parent(pstart1+i  , pstart2+j+1, pstart3+k  ),
-     &                   parent(pstart1+i  , pstart2+j+1, pstart3+k+1),
-     &                   parent(pstart1+i+1, pstart2+j  , pstart3+k  ),
-     &                   parent(pstart1+i+1, pstart2+j  , pstart3+k+1),
-     &                   parent(pstart1+i+1, pstart2+j+1, pstart3+k  ),
-     &                   parent(pstart1+i+1, pstart2+j+1, pstart3+k+1)
-                   ierror = 1
-                   return
+                    delf1new = 0.0
+                    delf2new = 0.0
+                    delf3new = 0.0
+c                   write(6,*) 'abc',delf0,sprime,chi1,chi2,chi3,
+c     &               delf1,delf2,delf3,fbar,delf1new+delf2new+delf3new,
+c     &               delf1new,delf2new,delf3new,s,work(i,j,k),
+c     &               work(i+1,j+1,k+1),
+c     &               work(i+1,j,k), work(i,j+1,k+1), work(i,j+1,k),
+c     &               work(i+1,j,k+1), work(i,j,k+1), work(i+1,j+1,k)
+c                   write(6,*) i,j,k,pdim1,pdim2,pdim3,dim1,dim2,dim3,
+c     &               end1,end2,end3,refine1,refine2,refine3,
+c     &               pstart1,pstart2,pstart3
+c                   write(6,*) 
+c     &                   parent(pstart1+i-1, pstart2+j-1, pstart3+k-1),
+c     &                   parent(pstart1+i-1, pstart2+j-1, pstart3+k  ),
+c     &                   parent(pstart1+i-1, pstart2+j  , pstart3+k-1),
+c     &                   parent(pstart1+i-1, pstart2+j  , pstart3+k  ),
+c     &                   parent(pstart1+i  , pstart2+j-1, pstart3+k-1),
+c     &                   parent(pstart1+i  , pstart2+j-1, pstart3+k  ),
+c     &                   parent(pstart1+i  , pstart2+j  , pstart3+k-1),
+c     &                   parent(pstart1+i  , pstart2+j  , pstart3+k  )
+c                   write(6,*) 
+c     &                   parent(pstart1+i  , pstart2+j  , pstart3+k  ),
+c     &                   parent(pstart1+i  , pstart2+j  , pstart3+k+1),
+c     &                   parent(pstart1+i  , pstart2+j+1, pstart3+k  ),
+c     &                   parent(pstart1+i  , pstart2+j+1, pstart3+k+1),
+c     &                   parent(pstart1+i+1, pstart2+j  , pstart3+k  ),
+c     &                   parent(pstart1+i+1, pstart2+j  , pstart3+k+1),
+c     &                   parent(pstart1+i+1, pstart2+j+1, pstart3+k  ),
+c     &                   parent(pstart1+i+1, pstart2+j+1, pstart3+k+1)
+c                   ierror = 1
+c                   return
                 endif
                 if (s .ne. s) then
                    write(6,*) 'int2',delf0,sprime,chi1,chi2,chi3,

@@ -412,6 +412,13 @@ EXTERN RateDataType RateData;
 EXTERN int H2FormationOnDust;
 EXTERN int MixSpeciesAndColors;
 
+/* Omukai (2005) chemical network flag */
+EXTERN int withWater;
+/* Omukai water rates - Omukai, Grackle, Bialy */
+EXTERN int water_rates;
+EXTERN int water_only;
+EXTERN int crx_ionization;
+
 /* Glover chemistry/cooling network flags */
 EXTERN int GloverChemistryModel;  // 0 is off, on is 1-7, excluding 6
 

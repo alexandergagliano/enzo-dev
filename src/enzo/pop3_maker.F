@@ -12,7 +12,9 @@ c
      &                      odthresh, starmass, level, np,
      &                      xp, yp, zp, up, vp, wp,
      &                      mp, tdp, tcp, metalf,
-     &                      type, ctype, justburn, iradtrans)
+     &                      type, ctype, justburn, iradtrans, iwater,
+     &                      oo, cc)
+
 c
 c  CREATES PRIMORDIAL STAR PARTICLES
 c
@@ -79,7 +81,8 @@ c-----------------------------------------------------------------------
 c
 c  Arguments
 c
-      INTG_PREC nx, ny, nz, ibuff, nmax, np, level, imetal, imethod
+      INTG_PREC nx, ny, nz, ibuff, nmax, np, level, imetal, imethod,
+     &          iwater
       INTG_PREC procnum, ctype, iradtrans
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), temp(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz), h2d(nx,ny,nz)
@@ -91,6 +94,7 @@ c
       P_PREC xp(nmax), yp(nmax), zp(nmax)
       R_PREC    up(nmax), vp(nmax), wp(nmax)
       R_PREC    mp(nmax), tdp(nmax), tcp(nmax), metalf(nmax)
+      R_PREC    oo(nx, ny, nz), cc(nx, ny, nz)
       INTG_PREC type(nmax)
       R_PREC    odthresh, starmass, mintdyn, h2crit, lifetime
       R_PREC    metalcrit
@@ -172,7 +176,7 @@ c
                bmass = d(i,j,k) * m1
 c               isosndsp2 = sndspdC * temp(i,j,k)
 c               jeanmass = pi_val/(6._RKIND*sqrt(d(i,j,k)*dble(d1))) *
-c     &                    dble(pi_val * isosndsp2 / GravConst)**1.5_RKIND / SolarMass
+c     &                    dble(pi_val * isosndsp2 / GravConst**1.5_RKIND / SolarMass
 c
 c               if (bmass .lt. jeanmass) 
 c     &            write(40,*) '2',bmass,jeanmass
@@ -372,7 +376,8 @@ c
      &     d1, x1, v1, t1, 
      &     npart, xstart, ystart, zstart, ibuff,
      &     xp, yp, zp, up, vp, wp,
-     &     mp, life, tcp, metalf, type, ctype)
+     &     mp, life, tcp, metalf, type, ctype, iwater, oo, cc)
+
 c
 c  RELEASES PRIMORDIAL "STAR" PARTICLE ENERGY
 c
@@ -421,7 +426,9 @@ c-----------------------------------------------------------------------
 c
 c  Arguments
 c
-      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod, ctype
+      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod, ctype,
+     &          iwater
+
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
       R_PREC    r(nx,ny,nz), metal(nx,ny,nz), ge(nx,ny,nz)
@@ -432,18 +439,25 @@ c
       R_PREC    up(npart), vp(npart), wp(npart)
       R_PREC    mp(npart), life(npart), tcp(npart), metalf(npart)
       INTG_PREC type(npart)
+      R_PREC    cc(nx, ny, nz), oo(nx, ny, nz)
 c
 c  Locals
 c
       INTG_PREC i, j, k, n
       R_PREC energy, lum, sn_nrg, m_eject, yield, dratio, m1
       R_PREC lower_pisn, upper_pisn, lsun, he_core, starmass, lifetime
+      R_PREC ofrac, cfrac
       parameter (lower_pisn = 140._RKIND, upper_pisn = 260._RKIND, 
      $           lsun = 2.e33_RKIND)
       LOGIC_PREC death, pisn
 c
 c-----------------------------------------------------------------------
 c
+c     Calculate mass abundance ratios for Oxygen and Carbon
+
+      ofrac = 0.553
+      cfrac = 0.228
+
 c     Calculate mass conversion factor
 c
       m1 = dble(x1*dx)**3 * dble(d1) / SolarMass
@@ -539,6 +553,25 @@ c
                metal(i,j,k) = (metal(i,j,k)*d(i,j,k) + yield) / 
      $              (d(i,j,k) + m_eject)
             endif
+
+c           Metal enrichment for Omukai (2005) chemical
+c           network. oo, cc are number densities in cgs
+c           units, NOT code units. 
+
+c           First convert to mass density
+            if (iwater .eq. 1) then
+              oo(i,j,k) = dble(oo(i,j,k)*16.0)/(6.022D23)
+              cc(i,j,k) = dble(cc(i,j,k)*12.0)/(6.022D23)
+
+c             Convert enrichment to mass density, add
+              oo(i,j,k) = oo(i,j,k) + yield * dble(d1) * ofrac
+              cc(i,j,k) = cc(i,j,k) + yield * dble(d1) * ofrac
+
+c             Convert back to number density
+              oo(i,j,k) = dble(oo(i,j,k)/16.0)*(6.022D23)
+              cc(i,j,k) = dble(cc(i,j,k)/12.0)*(6.022D23)
+            endif
+
 c
 c           Mass and momentum feedback
 c

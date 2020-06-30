@@ -286,7 +286,7 @@ c
      &               npart, xstart, ystart, zstart, ibuff,
      &               xp, yp, zp, up, vp, wp,
      &               mp, tdp, tcp, metalf, type, justburn,
-     &               kinf_in,exptime_in)
+     &               kinf_in,exptime_in, iwater, oo, cc)
 
 c
 c  RELEASES "STAR" PARTICLE ENERGY, MASS AND METALS
@@ -354,12 +354,13 @@ c-----------------------------------------------------------------------
 c
 c  Arguments
 c
-      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, 
+      INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, iwater,
      &      imulti_metals, imethod,
      &      distrad, diststep, distcells
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
-      R_PREC    r(nx,ny,nz), ge(nx,ny,nz)
+      R_PREC    r(nx,ny,nz), ge(nx,ny,nz),
+     &          oo(nx,ny,nz), cc(nx,ny,nz)
       R_PREC    metal(nx,ny,nz)
       R_PREC    mu(nx,ny,nz)
       R_PREC    zfield1(nx,ny,nz), zfield2(nx,ny,nz)
@@ -371,6 +372,7 @@ c
       R_PREC    mp(npart), tdp(npart), tcp(npart), metalf(npart)
       INTG_PREC type(npart)
       R_PREC 	  kinf,kinf_in,exptime_in,exptime
+      R_PREC      ofrac, cfrac
 c
 c  Locals
 c    (msolar_e51 is one solar rest mass energy divided by 10^51 erg)
@@ -745,7 +747,8 @@ c
      &                        dxf, dyf, dzf, dxc, dyc, dzc,
      &                        imethod, imetal, imulti_metals, idual,
      &                        m_eject, yield, metalf(n),
-     &                        mass_per_cell, 1._RKIND, 0._RKIND)
+     &                        mass_per_cell, 1._RKIND, 0._RKIND, dunits,
+     &                        iwater, oo, cc)
 c
 c           The kinetic energy after the feedback event is a quadratic equation
 c           with delta_p, where delta_p is the total amount of momentum added
@@ -1129,19 +1132,21 @@ c
      &                        imethod, imetal, imulti_metals, idual,
      &                        m_eject, yield, metalf,
      &                        mass_per_cell, mom_per_cell, 
-     &                        therm_per_cell)
+     &                        therm_per_cell, dunits, iwater, oo, cc)
+
 c
       implicit none
 #include "fortran_types.def"
 c
 c     Arguments
 c
-      INTG_PREC nx, ny, nz, ic, jc, kc, idual
+      INTG_PREC nx, ny, nz, ic, jc, kc, idual, iwater
       INTG_PREC iface, jface, kface, imethod, imetal, imulti_metals
       R_PREC    d(nx, ny, nz), metal(nx,ny,nz), ge(nx,ny,nz)
       R_PREC    pu(nx,ny,nz), pv(nx,ny,nz), pw(nx,ny,nz), te(nx,ny,nz)
+      R_PREC    oo(nx,ny,nz), cc(nx,ny,nz), dunits
       R_PREC    mass_per_cell, mom_per_cell, therm_per_cell
-      R_PREC    m_eject, yield, metalf
+      R_PREC    m_eject, yield, metalf, ofrac, cfrac
       R_PREC    dxf, dyf, dzf, dxc, dyc, dzc,
      &        dxf1, dyf1, dzf1, dxc1, dyc1, dzc1
 c
@@ -1235,6 +1240,46 @@ c
      &                          m_eject * metalf)
                            
                         endif
+
+c                       Metal enrichment for Omukai(2005) chemical
+c                       network. oo, cc are number densities in cgs
+c                       units, NOT code units
+c                       
+c                       First convert to mass density
+                        if (iwater .eq. 1) then
+
+                             oo(ic+i1,jc+j1,kc+k1) =
+     &                            dble(oo(ic+i1,jc+j1,kc+k1)*16.0)
+     &                             /(6.022D23)
+
+                             cc(ic+i1,jc+j1,kc+k1) =
+     &                            dble(cc(ic+i1,jc+j1,kc+k1)*12.0)
+     &                             /(6.022D23)
+
+c                            Convert enrichment to mass density, add
+                             oo(ic+i1,jc+j1,kc+k1) =
+     &                              oo(ic+i1,jc+j1,kc+k1) +
+     &                              ((delta_mass/m_eject)
+     &                              * (yield * (1._RKIND-metalf) +
+     &                               m_eject * metalf)) *
+     &                              dble(dunits) * ofrac
+
+                             cc(ic+i1,jc+j1,kc+k1) =
+     &                              cc(ic+i1,jc+j1,kc+k1) +
+     &                              ((delta_mass/m_eject)
+     &                              * (yield * (1._RKIND-metalf) +
+     &                               m_eject * metalf)) *
+     &                              dble(dunits) * cfrac
+
+c                            Convert back to number density
+                             oo(ic+i1,jc+j1,kc+k1) =
+     &                              dble(oo(ic+i1,jc+j1,kc+k1)/16.0)
+     &                                      *(6.022D23)
+                             cc(ic+i1,jc+j1,kc+k1) =
+     &                              dble(cc(ic+i1,jc+j1,kc+k1)/12.0)
+     &                                      *(6.022D23)
+                        endif
+
 c     
 c     End loop over CIC-deposit
 c     

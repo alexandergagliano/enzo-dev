@@ -15,6 +15,9 @@ struct TestProblemDataType
   /* multispecies */
   int MultiSpecies;
 
+  /* Omukai (2005) water chemistry */
+  int withWater;
+
   // fractions in the interior (where the blast wave energy is injected)
   float HI_Fraction_Inner;
   float HII_Fraction_Inner;

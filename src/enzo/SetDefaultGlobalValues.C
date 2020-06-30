@@ -54,7 +54,7 @@ int SetDefaultGlobalValues(TopGridData &MetaData)
   int dim, i, j;
  
   huge_number               = 1.0e+20;
-  tiny_number               = 1.0e-20;
+  tiny_number               = 1.0e-50;
 
   /* set the default MetaData values. */
  
@@ -839,6 +839,9 @@ int SetDefaultGlobalValues(TopGridData &MetaData)
 
   /* The DToHRatio is by mass in the code, so multiply by 2. */
   TestProblemData.DeuteriumToHydrogenRatio = 2.0*3.4e-5; // Burles & Tytler 1998 
+
+  /* Default has Omukai's water network turned off */
+  TestProblemData.withWater = 0;
 
   // multispecies default values assume completely neutral gas with primordial D/H ratio
   TestProblemData.MultiSpecies = 0;

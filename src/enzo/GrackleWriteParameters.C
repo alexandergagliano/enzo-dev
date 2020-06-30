@@ -48,6 +48,11 @@ int GrackleWriteParameters(FILE *fptr)
   fprintf(fptr, "local_dust_to_gas_ratio     = %lf\n", grackle_data->local_dust_to_gas_ratio);
   fprintf(fptr, "use_isrf_field              = %d\n",  grackle_data->use_isrf_field);
   fprintf(fptr, "use_dust_density_field      = %d\n",  grackle_data->use_dust_density_field);
+  fprintf(fptr, "withWater                   = %d\n", grackle_data->withWater);
+  fprintf(fptr, "water_rates                 = %d\n", grackle_data->water_rates);
+  fprintf(fptr, "water_only                  = %d\n", grackle_data->water_only);
+  fprintf(fptr, "crx_ionization              = %d\n", grackle_data->crx_ionization);
+  fprintf(fptr, "grackle_molecular_data      = %s\n", grackle_data->grackle_molecular_data);
 
 #endif
 

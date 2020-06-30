@@ -36,9 +36,13 @@ MACH_FILE  = Make.mach.linux-gnu
 # Install paths (local variables)
 #-----------------------------------------------------------------------
 
-LOCAL_HDF5_INSTALL    = /PATH/TO/SERIAL-HDF5/INSTALL # mandatory
-LOCAL_GRACKLE_INSTALL = /PATH/TO/GRACKLE/INSTALL # optional
-LOCAL_HYPRE_INSTALL   = /PATH/TO/HYPRE/INSTALL   # optional
+#LOCAL_HDF5_INSTALL    = /PATH/TO/SERIAL-HDF5/INSTALL # mandatory
+#LOCAL_HDF5_INSTALL     = /home/alexgagliano/anaconda3
+#LOCAL_HYPRE_INSTALL   = /PATH/TO/HYPRE/INSTALL   # optional
+LOCAL_HDF5_INSTALL = /usr
+#LOCAL_HDF5_INSTALL = /usr/lib64
+LOCAL_GRACKLE_INSTALL = /home/alexgagliano/Downloads/grackle_converted
+LOCAL_HYPRE_INSTALL = /usr
 
 #-----------------------------------------------------------------------
 # Compiler settings
@@ -74,10 +78,10 @@ MACH_DEFINES   = -DLINUX -DH5_USE_16_API
 
 
 MACH_CPPFLAGS = -P -traditional 
-MACH_CFLAGS   = 
+MACH_CFLAGS   =
 MACH_CXXFLAGS =
-MACH_FFLAGS   = -fno-second-underscore -ffixed-line-length-132
-MACH_F90FLAGS = -fno-second-underscore
+MACH_FFLAGS   = -fno-second-underscore -ffixed-line-length-132 -fallow-argument-mismatch
+MACH_F90FLAGS = -fno-second-underscore -fallow-argument-mismatch
 MACH_LDFLAGS  = 
 
 #-----------------------------------------------------------------------

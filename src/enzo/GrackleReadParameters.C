@@ -68,6 +68,11 @@ int GrackleSetDefaultParameters(FILE *fptr){
     MultiSpecies                          = (int) grackle_data->primordial_chemistry;
     MetalCooling                          = (int) grackle_data->metal_cooling;
     H2FormationOnDust                     = (int) grackle_data->h2_on_dust;
+    withWater                             = (int) grackle_data->withWater;
+    water_rates                           = (int) grackle_data->water_rates;
+    water_only                            = (int) grackle_data->water_only;
+    crx_ionization                        = (int) grackle_data->crx_ionization;
+     
     CloudyCoolingData.CMBTemperatureFloor = (int) grackle_data->cmb_temperature_floor;
     ThreeBodyRate                         = (int) grackle_data->three_body_rate;
     CIECooling                            = (int) grackle_data->cie_cooling;
@@ -129,6 +134,13 @@ int GrackleReadParameters(FILE *fptr, FLOAT InitTime)
       grackle_data->grackle_data_file = dummy;
       ret++;
     }
+
+    //add molecular UV dissociation and ionization rates
+    if (sscanf(line, "grackle_molecular_data = %s", dummy) == 1) {
+      grackle_data->grackle_molecular_data = dummy;
+      ret++;
+    }
+
     ret += sscanf(line, "UVbackground = %d", &grackle_data->UVbackground);
     ret += sscanf(line, "Compton_xray_heating = %d",
                     &grackle_data->Compton_xray_heating);
@@ -150,6 +162,11 @@ int GrackleReadParameters(FILE *fptr, FLOAT InitTime)
                   &grackle_data->use_isrf_field);
     ret += sscanf(line, "use_dust_density_field = %d",
                   &grackle_data->use_dust_density_field);
+
+    //ret += sscanf(line, "withWater = %d", &grackle_data->withWater);
+    //ret += sscanf(line, "water_rates = %d", &grackle_data->water_rates);
+    //ret += sscanf(line, "water_only = %d", &grackle_data->water_only);
+    //ret += sscanf(line, "crx_ionization = %d", &grackle_data->crx_ionization);
 
     /* If the dummy char space was used, then make another. */
     if (*dummy != 0) {
@@ -198,6 +215,11 @@ int GrackleReadParameters(FILE *fptr, FLOAT InitTime)
   grackle_data->UVbackground_redshift_fullon   = (double) CoolData.RadiationRedshiftFullOn;
   grackle_data->UVbackground_redshift_drop     = (double) CoolData.RadiationRedshiftDropOff;
   grackle_data->use_radiative_transfer         = (Eint32) RadiativeTransfer;
+  grackle_data->withWater                      = (Eint32) withWater;
+  grackle_data->water_rates                    = (Eint32) water_rates;
+  grackle_data->water_only                     = (Eint32) water_only;
+  grackle_data->crx_ionization                 = (Eint32) crx_ionization;
+
   // grackle_data->radiative_transfer_coupled_rate_solver set in RadiativeTransferReadParameters
   // grackle_data->radiative_transfer_hydrogen_only set in RadiativeTransferReadParameters
 
@@ -218,7 +240,8 @@ int GrackleReadParameters(FILE *fptr, FLOAT InitTime)
   code_units grackle_units;
   grackle_units.a_units = 1.0;
   float DensityUnits = 1.0, LengthUnits = 1.0, TemperatureUnits = 1.0,
-    TimeUnits = 1.0, VelocityUnits = 1.0, MassUnits = 1.0;
+    TimeUnits = 1.0, VelocityUnits = 1.0;
+  double MassUnits = 1.0;
   if (GetUnits(&DensityUnits, &LengthUnits, &TemperatureUnits,
                &TimeUnits, &VelocityUnits, &MassUnits, InitTime) == FAIL) {
     ENZO_FAIL("Error in GetUnits.\n");

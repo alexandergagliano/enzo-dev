@@ -264,7 +264,8 @@ c
      &                      te1, metalSNII,
      &                      metalfSNII, imetalSNII,
      &                      s49_tot, maxlevel,
-     &                      distrad, diststep, distcells)
+     &                      distrad, diststep, distcells, iwater, oo, cc)
+
 c
 c  RELEASES "STAR" PARTICLE ENERGY, MASS AND METALS
 c
@@ -298,6 +299,7 @@ c    ibuff    - number of buffer zones at each end of grid
 c    idual    - dual energy flag
 c    imetal   - metallicity flag (0 - none, 1 - yes)
 c    imethod  - hydro method (0 - PPMDE, 1 - PPMLR, 2 - ZEUS)
+c    iwater   - flag for Omukai (2005) chemistry network
 c    level - current level of refinement
 c
 c    x/y/z start - starting position of grid origin
@@ -307,6 +309,7 @@ c    mp       - mass of new particles
 c    tdp      - dynamical time of zone in which particle created
 c    tcp      - creation time of particle (-1 if not a star particle)
 c    metalf   - star particle metal fraction
+c    ofrac, cfrac -- fraction of metal ejecta which is oxygen or carbon
 c    npart    - particle array size specified by calling routine
 c    yield    - fraction of stellar mass that is converted to metals
 c    type  - particle types (currently in the cell)
@@ -316,6 +319,7 @@ c    maxlevel - the simulation's maximum refinement level
 c
 c  OUTPUTS:
 c    d,u,v,w,ge,e - modified field
+c    oo, cc       - modified oxygen and carbon densities
 c
 c
 c-----------------------------------------------------------------------
@@ -326,8 +330,10 @@ c
 c  Arguments
 c
       INTG_PREC nx, ny, nz, ibuff, npart, idual, imetal, imethod, level
+      INTG_PREC iwater
       R_PREC    d(nx,ny,nz), dm(nx,ny,nz), te(nx,ny,nz)
       R_PREC    u(nx,ny,nz), v(nx,ny,nz), w(nx,ny,nz)
+      R_PREC    cc(nx, ny, nz), oo(nx, ny, nz)
       R_PREC    metal(nx,ny,nz), ge(nx,ny,nz)
       R_PREC    metalSNII(nx,ny,nz)
       R_PREC    dt, dx, z
@@ -358,11 +364,15 @@ c
      &     m_ejSN, dSN, td7, td7p2, td7p4, ionized, theDiff,
      &     logfac, alpha, num, stromgren_radius, stromgren_volume,
      &     cell_volume, dEjectSN, year, xc, yc, zc, mc,
+     &     ofrac, cfrac,
      &     wind_energy, sn_energy, p_sn, radius, rx, ry, rz, kms,
      $     ex, ey, ez, px, py, pz, kesum, mv, pcell
       parameter (year=3.15569d7,
      &     kms=1d5)
       LOGICAL typ
+
+      ofrac = 0.553
+      cfrac = 0.228
 c
       do n=1, npart
          typ = type(n) .eq. 2 .or. type(n) .eq. 4
@@ -752,6 +762,28 @@ c
                metalSNII(i,j,k) = metalSNII(i,j,k)
      &             / (dEject + dEjectSN + d(i,j,k))
             endif !! End of imetalSNII==1
+
+c           Metal enrichment for Omukai (2005) chemical
+c           network. oo, cc are number densities in cgs units,
+c           NOT code units.
+c
+c           First convert to mass density
+            if (iwater .eq. 1) then
+
+               oo(i,j,k) = dble(oo(i, j, k) * 16.0)/(6.022D23)
+               cc(i,j,k) = dble(cc(i, j, k) * 12.0)/(6.022D23)
+
+c              First convert to mass density, add
+               oo(i,j,k) = oo(i,j,k) + ofrac*dble(d1)*
+     &               (metalf(n) * dEject + ZSN * dEjectSN)
+
+               cc(i,j,k) = cc(i,j,k) + cfrac*dble(d1)*
+     &               (metalf(n) * dEject + ZSN * dEjectSN)
+
+c              Convert back to number density
+               oo(i,j,k) = dble(oo(i,j,k) / 16.0)*(6.022D23)
+               cc(i,j,k) = dble(cc(i,j,k) / 12.0)*(6.022D23)
+            endif
 
          endif                  !! End of imetal==1
 

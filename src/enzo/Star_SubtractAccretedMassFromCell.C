@@ -72,6 +72,23 @@ int Star::SubtractAccretedMassFromCell(void)
       ENZO_FAIL("Error in grid->IdentifySpeciesFields.\n");
     }
 
+  /* Find species for Omukai (2005) chemical network */
+    int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+      CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+      CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum,
+      CH5plusNum,O2HplusNum;
+
+  if (withWater)
+    if (CurrentGrid->IdentifySpeciesFieldsChem(WaterNum, ONum, OHNum, O2Num, OplusNum,
+                                  OHplusNum, H2OplusNum, H3OplusNum, O2plusNum, CplusNum,
+                                  CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum,
+                                  CO2Num, CHplusNum,
+                                  CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum,
+                                  CH3plusNum, CH4plusNum, CH5plusNum, O2HplusNum) == FAIL)
+     {
+        ENZO_VFAIL("Error in grid->IdentifySpeciesFieldsChem.");
+     }
+
   /* Find Metallicity or SNColour field and set flag. */
 
   int SNColourNum, MetalNum, MBHColourNum, Galaxy1ColourNum, Galaxy2ColourNum,
@@ -156,6 +173,39 @@ int Star::SubtractAccretedMassFromCell(void)
     CurrentGrid->BaryonField[DIINum][index] *= factor;
     CurrentGrid->BaryonField[HIINum][index] *= factor;
     CurrentGrid->BaryonField[HDINum][index] *= factor;
+  }
+
+  if (withWater){
+    CurrentGrid->BaryonField[ONum][index]       *= factor;
+    CurrentGrid->BaryonField[CNum][index]       *= factor;
+    CurrentGrid->BaryonField[WaterNum][index]   *= factor;
+    CurrentGrid->BaryonField[OHNum][index]      *= factor;
+    CurrentGrid->BaryonField[O2Num][index]      *= factor;
+    CurrentGrid->BaryonField[OplusNum][index]   *= factor;
+    CurrentGrid->BaryonField[OHplusNum][index]  *= factor;
+    CurrentGrid->BaryonField[H2OplusNum][index] *= factor;
+    CurrentGrid->BaryonField[H3OplusNum][index] *= factor;
+    CurrentGrid->BaryonField[O2plusNum][index]  *= factor;
+    CurrentGrid->BaryonField[CplusNum][index]   *= factor;
+    CurrentGrid->BaryonField[CHNum][index]      *= factor;
+    CurrentGrid->BaryonField[CH2Num][index]     *= factor;
+    CurrentGrid->BaryonField[CH3Num][index]     *= factor;
+    CurrentGrid->BaryonField[CH4Num][index]     *= factor;
+    CurrentGrid->BaryonField[CONum][index]      *= factor;
+    CurrentGrid->BaryonField[COplusNum][index]  *= factor;
+    CurrentGrid->BaryonField[CO2Num][index]     *= factor;
+    if (water_rates == 3){
+      CurrentGrid->BaryonField[CHplusNum][index]  *= factor;
+      CurrentGrid->BaryonField[CH2plusNum][index] *= factor;
+      CurrentGrid->BaryonField[H3plusNum][index]  *= factor;
+      CurrentGrid->BaryonField[HCOplusNum][index]  *= factor;
+      CurrentGrid->BaryonField[HeHplusNum][index]  *= factor;
+      CurrentGrid->BaryonField[CH3plusNum][index]  *= factor;
+      CurrentGrid->BaryonField[CH4plusNum][index]  *= factor;
+      CurrentGrid->BaryonField[CH5plusNum][index]  *= factor;
+      CurrentGrid->BaryonField[O2HplusNum][index]  *= factor;
+
+    }
   }
 
   if (MetalNum >= 0)

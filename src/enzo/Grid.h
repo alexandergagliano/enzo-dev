@@ -1822,6 +1822,17 @@ int TransferSubgridActiveParticles(grid* Subgrids[], int NumberOfSubgrids,
 			    int &HMNum, int &H2INum, int &H2IINum,
                             int &DINum, int &DIINum, int &HDINum);
 
+  /* Identify Omukai water chemistry species. */
+
+  int IdentifySpeciesFieldsChem(int &WaterNum, int &ONum, int &OHNum, int &O2Num, int &OplusNum,
+                                int &OHplusNum, int &H2OplusNum, int &H3OplusNum, int &O2plusNum,
+                                int &CplusNum, int &CNum, int &CHNum, int &CH2Num, int &CH3Num,
+                                int &CH4Num, int &CONum, int &COplusNum, int &CO2Num,
+                                int &CHplusNum, int &CH2plusNum, int &H3plusNum,
+                                int &HCOplusNum, int &HeHplusNum, int &CH3plusNum,
+                                int &CH4plusNum, int &CH5plusNum, int &O2HplusNum);
+
+
   /* Identify shock fields. */
   int IdentifyShockSpeciesFields(int &MachNum,int &PSTempNum, int &PSDenNum);
 

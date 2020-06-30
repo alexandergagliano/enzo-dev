@@ -98,6 +98,22 @@ int grid::AddFeedbackSphere(Star *cstar, int level, float radius, float DensityU
         ENZO_FAIL("Error in grid->IdentifySpeciesFields.");
     }
 
+  int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+    CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+    CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum,
+    CH5plusNum, O2HplusNum;
+
+  if (withWater)
+    if (this->IdentifySpeciesFieldsChem(WaterNum, ONum, OHNum, O2Num, OplusNum,
+                                  OHplusNum, H2OplusNum, H3OplusNum, O2plusNum, CplusNum,
+                                  CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum,
+                                  CO2Num, CHplusNum, CH2plusNum, H3plusNum, HCOplusNum,
+                                  HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum, O2HplusNum) == FAIL)
+     {
+        ENZO_VFAIL("Error in grid->IdentifySpeciesFieldsChem.");
+     }
+
+
   fh = CoolData.HydrogenFractionByMass;
 
   /* Find Metallicity or SNColour field and set flag. */
@@ -278,6 +294,61 @@ int grid::AddFeedbackSphere(Star *cstar, int level, float radius, float DensityU
 
 	    if (MetallicityField == TRUE)
 	      BaryonField[MetalNum][index] += EjectaMetalDensity;
+
+//          Metal enrichment for Omukai (2005) chemical network.
+//          oo, cc are number densities in cgs units, NOT
+//          code units.
+            if (withWater){
+
+              //mass fractions of enriched metal that are oxygen, carbon
+              double ofrac = 0.553;
+              double cfrac = 0.228;
+
+//            solar metallicity by mass
+              double Zsol = 0.01295;
+              double metallicity = BaryonField[MetalNum][index] / BaryonField[DensNum][index]/Zsol;
+
+//            First convert to mass density
+              BaryonField[ONum][index] = (BaryonField[ONum][index]*16.0)/(6.022e23);
+              BaryonField[CNum][index] = (BaryonField[CNum][index]*12.0)/(6.022e23);
+
+              BaryonField[WaterNum][index]   *= increase;
+              BaryonField[OHNum][index]      *= increase;
+              BaryonField[O2Num][index]      *= increase;
+              BaryonField[OplusNum][index]   *= increase;
+              BaryonField[OHplusNum][index]  *= increase;
+              BaryonField[H2OplusNum][index] *= increase;
+              BaryonField[H3OplusNum][index] *= increase;
+              BaryonField[O2plusNum][index]  *= increase;
+              BaryonField[CplusNum][index]   *= increase;
+              BaryonField[CHNum][index]      *= increase;
+              BaryonField[CH2Num][index]     *= increase;
+              BaryonField[CH3Num][index]     *= increase;
+              BaryonField[CH4Num][index]     *= increase;
+              BaryonField[CONum][index]      *= increase;
+              BaryonField[COplusNum][index]  *= increase;
+              BaryonField[CO2Num][index]     *= increase;
+
+//            Convert enrichment ot mass density, add
+              BaryonField[ONum][index] = ofrac*DensityUnits*EjectaMetalDensity;
+              BaryonField[CNum][index] = cfrac*DensityUnits*EjectaMetalDensity;
+
+//            Convert back to number density
+              BaryonField[ONum][index] = (BaryonField[ONum][index]/16.0)*(6.022e23);
+              BaryonField[CNum][index] = (BaryonField[CNum][index]/12.0)*(6.022e23);
+
+              if (water_rates == 3){
+                BaryonField[CHplusNum][index]  *= increase;
+                BaryonField[CH2plusNum][index] *= increase;
+                BaryonField[H3plusNum][index]  *= increase;
+                BaryonField[HCOplusNum][index] *= increase;
+                BaryonField[HeHplusNum][index] *= increase;
+                BaryonField[CH3plusNum][index] *= increase;
+                BaryonField[CH4plusNum][index] *= increase;
+                BaryonField[CH5plusNum][index] *= increase;
+                BaryonField[O2HplusNum][index] *= increase;
+              }
+            }
 
 	    CellsModified++;
 

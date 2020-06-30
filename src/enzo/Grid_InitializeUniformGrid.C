@@ -40,6 +40,10 @@ int grid::InitializeUniformGrid(float UniformDensity,
   int CINum, CIINum, OINum, OIINum, SiINum, SiIINum, SiIIINum, CHINum, CH2INum, 
     CH3IINum, C2INum, COINum, HCOIINum, OHINum, H2OINum, O2INum;
 
+  int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+      CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num,
+      CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum, 
+      CH5plusNum, O2HplusNum;  
 
   int ExtraField[2];
 
@@ -112,6 +116,41 @@ int grid::InitializeUniformGrid(float UniformDensity,
       FieldType[ExtraField[1] = NumberOfBaryonFields++] = ExtraType1;
     }
   }
+
+  if (withWater){
+    if (MyProcessorNumber == ROOT_PROCESSOR) {printf("\t Adding water chemistry fields.\n");}
+    FieldType[WaterNum   = NumberOfBaryonFields++] = WaterDensity;
+    FieldType[ONum       = NumberOfBaryonFields++] = ODensity;
+    FieldType[OHNum      = NumberOfBaryonFields++] = OHDensity;
+    FieldType[O2Num      = NumberOfBaryonFields++] = O2Density;
+    FieldType[OplusNum   = NumberOfBaryonFields++] = OplusDensity;
+    FieldType[OHplusNum  = NumberOfBaryonFields++] = OHplusDensity;
+    FieldType[H2OplusNum = NumberOfBaryonFields++] = H2OplusDensity;
+    FieldType[H3OplusNum = NumberOfBaryonFields++] = H3OplusDensity;
+    FieldType[O2plusNum  = NumberOfBaryonFields++] = O2plusDensity;
+    FieldType[CplusNum   = NumberOfBaryonFields++] = CplusDensity;
+    FieldType[CNum       = NumberOfBaryonFields++] = CDensity;
+    FieldType[CHNum      = NumberOfBaryonFields++] = CHDensity;
+    FieldType[CH2Num     = NumberOfBaryonFields++] = CH2Density;
+    FieldType[CH3Num     = NumberOfBaryonFields++] = CH3Density;
+    FieldType[CH4Num     = NumberOfBaryonFields++] = CH4Density;
+    FieldType[CONum      = NumberOfBaryonFields++] = CODensity;
+    FieldType[COplusNum  = NumberOfBaryonFields++] = COplusDensity;
+    FieldType[CO2Num     = NumberOfBaryonFields++] = CO2Density;
+  
+    if (water_rates == 3){ 
+      printf("Adding Bialy's water chemistry fields.\n");
+      FieldType[CHplusNum  = NumberOfBaryonFields++] = CHplusDensity;
+      FieldType[CH2plusNum = NumberOfBaryonFields++] = CH2plusDensity;
+      FieldType[H3plusNum  = NumberOfBaryonFields++] = H3plusDensity; 
+      FieldType[HCOplusNum  = NumberOfBaryonFields++] = HCOplusDensity;
+      FieldType[HeHplusNum  = NumberOfBaryonFields++] = HeHplusDensity;
+      FieldType[CH3plusNum  = NumberOfBaryonFields++] = CH3plusDensity;
+      FieldType[CH4plusNum  = NumberOfBaryonFields++] = CH4plusDensity;
+      FieldType[CH5plusNum  = NumberOfBaryonFields++] = CH5plusDensity;
+      FieldType[O2HplusNum  = NumberOfBaryonFields++] = O2HplusDensity;
+    }
+   }
  
   // Simon glover's chemistry models (there are several)
   //
@@ -296,6 +335,39 @@ int grid::InitializeUniformGrid(float UniformDensity,
 
       }
     } // if(TestProblemData.UseMetallicityField)
+
+    if(withWater){
+     if (MyProcessorNumber == ROOT_PROCESSOR) {printf("Initializing water chemistry fields.C\n");}
+     BaryonField[WaterNum  ][i] = tiny_number; // Set water to zero.
+     BaryonField[ONum      ][i] = tiny_number;
+     BaryonField[OHNum     ][i] = tiny_number;
+     BaryonField[O2Num     ][i] = tiny_number;
+     BaryonField[OplusNum  ][i] = tiny_number;
+     BaryonField[OHplusNum ][i] = tiny_number;
+     BaryonField[H2OplusNum][i] = tiny_number;
+     BaryonField[H3OplusNum][i] = tiny_number;
+     BaryonField[O2plusNum ][i] = tiny_number;
+     BaryonField[CplusNum  ][i] = tiny_number;
+     BaryonField[CNum      ][i] = tiny_number;
+     BaryonField[CHNum     ][i] = tiny_number;
+     BaryonField[CH2Num    ][i] = tiny_number;
+     BaryonField[CH3Num    ][i] = tiny_number;
+     BaryonField[CH4Num    ][i] = tiny_number;
+     BaryonField[CONum     ][i] = tiny_number;
+     BaryonField[COplusNum ][i] = tiny_number;
+     BaryonField[CO2Num    ][i] = tiny_number;
+     if (water_rates == 3){
+       BaryonField[CHplusNum ][i] = tiny_number;
+       BaryonField[CH2plusNum][i] = tiny_number;
+       BaryonField[H3plusNum ][i] = tiny_number;
+       BaryonField[HCOplusNum][i] = tiny_number;
+       BaryonField[HeHplusNum][i] = tiny_number;
+       BaryonField[CH3plusNum][i] = tiny_number;
+       BaryonField[CH4plusNum][i] = tiny_number;
+       BaryonField[CH5plusNum][i] = tiny_number;
+       BaryonField[O2HplusNum][i] = tiny_number;
+     }
+    }
 
         // simon glover chemistry stuff
     if(TestProblemData.GloverChemistryModel){
