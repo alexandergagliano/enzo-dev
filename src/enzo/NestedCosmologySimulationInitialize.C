@@ -157,7 +157,7 @@ int NestedCosmologySimulationInitialize(FILE *fptr, FILE *Outfptr,
   char *COName      = "CO_Density";
   char *COplusName  = "COplus_Density";
   char *CO2Name     = "CO2_Density";
-  char *CHplusName = "Hplus_Density";
+  char *CHplusName = "CHplus_Density";
   char *CH2plusName = "CH2plus_Density";
   char *H3plusName = "H3plus_Density";
   char *HCOplusName = "HCOplus_Density";
