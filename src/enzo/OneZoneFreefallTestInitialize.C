@@ -59,6 +59,33 @@ int OneZoneFreefallTestInitialize(FILE *fptr, FILE *Outfptr, HierarchyEntry &Top
   char *DIIName   = "DII_Density";
   char *HDIName   = "HDI_Density";
   char *MetalName = "Metal_Density";
+  char *WaterName   = "Water_Density";
+  char *OName       = "O_Density";
+  char *OHName      = "OH_Density";
+  char *O2Name      = "O2_Density";
+  char *OplusName   = "Oplus_Density";
+  char *OHplusName  = "OHplus_Density";
+  char *H2OplusName = "H2Oplus_Density";
+  char *H3OplusName = "H3Oplus_Density";
+  char *O2plusName  = "O2plus_Density";
+  char *CplusName   = "Cplus_Density";
+  char *CName       = "C_Density";
+  char *CHName      = "CH_Density";
+  char *CH2Name     = "CH2_Density";
+  char *CH3Name     = "CH3_Density";
+  char *CH4Name     = "CH4_Density";
+  char *COName      = "CO_Density";
+  char *COplusName  = "COplus_Density";
+  char *CO2Name     = "CO2_Density";
+  char *CHplusName = "CHplus_Density";
+  char *CH2plusName = "CH2plus_Density";
+  char *H3plusName = "H3plus_Density";
+  char *HCOplusName = "HCOplus_Density";
+  char *HeHplusName = "HeHplus_Density";
+  char *CH3plusName = "CH3plus_Density";
+  char *CH4plusName = "CH4plus_Density";
+  char *CH5plusName = "CH5plus_Density";
+  char *O2HplusName = "O2Hplus_Density";
   char *ExtraNames[2] = {"Z_Field1", "Z_Field2"};
 
    /* parameter declarations */
@@ -215,6 +242,40 @@ int OneZoneFreefallTestInitialize(FILE *fptr, FILE *Outfptr, HierarchyEntry &Top
       DataLabel[i++] = ExtraNames[0];
       DataLabel[i++] = ExtraNames[1];
     }
+  }
+    if (withWater){
+      /* Adding Omukai (2005) water chemistry fields */
+      if (MyProcessorNumber == ROOT_PROCESSOR) {printf("\t /* Adding water chemistry fields. */\n");}
+        DataLabel[i++] = WaterName;
+        DataLabel[i++] = OName;
+        DataLabel[i++] = OHName;
+        DataLabel[i++] = O2Name;
+        DataLabel[i++] = OplusName;
+        DataLabel[i++] = OHplusName;
+        DataLabel[i++] = H2OplusName;
+        DataLabel[i++] = H3OplusName;
+        DataLabel[i++] = O2plusName;
+        DataLabel[i++] = CplusName;
+        DataLabel[i++] = CName;
+        DataLabel[i++] = CHName;
+        DataLabel[i++] = CH2Name;
+        DataLabel[i++] = CH3Name;
+        DataLabel[i++] = CH4Name;
+        DataLabel[i++] = COName;
+        DataLabel[i++] = COplusName;
+        DataLabel[i++] = CO2Name;
+        if (water_rates == 3){
+
+          DataLabel[i++]  = CHplusName;
+          DataLabel[i++] = CH2plusName;
+          DataLabel[i++] = H3plusName;
+          DataLabel[i++] = HCOplusName;
+          DataLabel[i++] = HeHplusName;
+          DataLabel[i++] = CH3plusName;
+          DataLabel[i++] = CH4plusName;
+          DataLabel[i++] = CH5plusName;
+          DataLabel[i++] = O2HplusName;
+     }
   }
  
   for(j=0; j < i; j++)

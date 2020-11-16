@@ -270,7 +270,7 @@ Eint32 MAIN_NAME(Eint32 argc, char *argv[])
 
   CommunicationInitialize(&argc, &argv); 
 
-  //#define DEBUG_MPI
+//#define DEBUG_MPI
 #ifdef DEBUG_MPI
   if (MyProcessorNumber == ROOT_PROCESSOR) {
     int impi = 0;

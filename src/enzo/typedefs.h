@@ -144,7 +144,6 @@ const field_type
   OHIDensity      = 79,
   H2OIDensity     = 80,
   O2IDensity      = 81,
-
   MBHColour       = 82,
   ForbiddenRefinement = 83,
 

@@ -116,6 +116,8 @@ int grid::GrackleWrapper()
                     CH4Num, CONum, COplusNum, CO2Num, CNum, ONum);
 
      }
+
+  //print here!
  
   /* Get easy to handle pointers for each variable. */
  
@@ -296,7 +298,7 @@ int grid::GrackleWrapper()
         my_fields.CH3plus_density = BaryonField[CH3plusNum];
         my_fields.CH4plus_density = BaryonField[CH4plusNum];
         my_fields.CH5plus_density = BaryonField[CH5plusNum];
-        my_fields.O2Hplus_density = BaryonField[CH5plusNum];
+        my_fields.O2Hplus_density = BaryonField[O2HplusNum];
       }
   }
 
@@ -342,6 +344,7 @@ int grid::GrackleWrapper()
     fprintf(stderr, "Error in Grackle solve_chemistry.\n");
     return FAIL;
   }
+
 
   if (HydroMethod != Zeus_Hydro) {
     for (i = 0; i < size; i++) {

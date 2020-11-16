@@ -72,6 +72,11 @@ GravitationalConstant     = 1.394833e-3 // 4*pi*G_{cgs}*DensityUnits*TimeUnits^2
 #
 RadiativeCooling          = 1
 MultiSpecies              = 2
+withWater                 = 1
+water_only                = 0
+water_rates               = 3
+crx_ionization            = 1
+UVBackground              = 1
 H2FormationOnDust         = 1
 MetalCooling              = 3             // cloudy cooling
 CloudyCoolingGridFile     = solar_2008_3D_metals.h5 // 3D metals only

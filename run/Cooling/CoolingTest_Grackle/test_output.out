@@ -1,0 +1,130 @@
+App launch reported: 1 (out of 1) daemons - 16 (out of 16) procs
+MPI_Init: NumberOfProcessors = 16
+
+The Grackle Version 3.2.dev2
+Git Branch   master
+Git Revision 6bbec74a2a7aa2c0c61b1d05dd5e46890737f2c1
+
+Initializing grackle data.
+Initializing Cloudy cooling: Metals.
+cloudy_table_file: CloudyData_noUVB.h5.
+Cloudy cooling grid rank: 2.
+Cloudy cooling grid dimensions: 29 161.
+Parameter1: -10 to 4 (29 steps).
+Temperature: 1 to 9 (161 steps).
+Reading Cloudy Cooling dataset.
+Grackle run-time parameters:
+use_grackle                       = 1
+with_radiative_cooling            = 1
+primordial_chemistry              = 1
+dust_chemistry                    = 0
+metal_cooling                     = 1
+UVbackground                      = 0
+grackle_data_file                 = CloudyData_noUVB.h5
+cmb_temperature_floor             = 1
+Gamma                             = 1.66667
+h2_on_dust                        = 0
+use_dust_density_field            = 0
+photoelectric_heating             = 0
+photoelectric_heating_rate        = 8.5e-26
+use_isrf_field                    = 0
+interstellar_radiation_field      = 1.7
+use_volumetric_heating_rate       = 0
+use_specific_heating_rate         = 0
+three_body_rate                   = 0
+cie_cooling                       = 0
+h2_optical_depth_approximation    = 0
+ih2co                             = 1
+ipiht                             = 1
+HydrogenFractionByMass            = 0.76
+DeuteriumToHydrogenRatio          = 6.8e-05
+SolarMetalFractionByMass          = 0.01295
+local_dust_to_gas_ratio           = 0.009387
+NumberOfTemperatureBins           = 600
+CaseBRecombination                = 0
+TemperatureStart                  = 1
+TemperatureEnd                    = 1e+09
+NumberOfDustTemperatureBins       = 250
+DustTemperatureStart              = 1
+DustTemperatureEnd                = 1500
+Compton_xray_heating              = 0
+LWbackground_sawtooth_suppression = 0
+LWbackground_intensity            = 0
+UVbackground_redshift_on          = 7
+UVbackground_redshift_off         = 0
+UVbackground_redshift_fullon      = 6
+UVbackground_redshift_drop        = 0
+cloudy_electron_fraction_factor   = 0.00915396
+use_radiative_transfer            = 0
+radiative_transfer_coupled_rate_solver = 0
+radiative_transfer_intermediate_step = 0
+radiative_transfer_hydrogen_only  = 0
+self_shielding_method             = 0
+H2_self_shielding                 = 0
+withWater                         = 0
+water_rates                       = 3
+crx_ionization                    = 0
+grackle_molecular_data            = 
+water_only                        = 0
+OpenMP: off
+Initialdt in ReadParameterFile = 0.000000e+00
+InitializeNew: Starting problem initialization.
+Initialize Exterior
+ExtBndry: BoundaryRank = 3
+ExtBndry: GridDimension = 11 11 77 
+ExtBndry: NumberOfBaryonFields = 13
+InitializeNew: Initial grid hierarchy set
+InitializeNew: Partition Initial Grid 0
+Enter CommunicationPartitionGrid.
+PartitionGrid (on all processors): Layout = 2 2 4
+NumberOfNewGrids = 16
+GridDims[0]:  2 3
+GridDims[1]:  2 3
+GridDims[2]:  18 18 18 17
+StartIndex[0]:  0 2
+StartIndex[1]:  0 2
+StartIndex[2]:  0 18 36 54
+Call ZeroSUS on TopGrid
+Grid structure: 6376
+SubGrids structure: 102016
+Re-set Unigrid = 0
+Grid distribution
+Delete OldGrid
+OldGrid deleted
+Exit CommunicationPartitionGrid.
+InitializeNew: Finished problem initialization.
+CPUTime-output: Frac = 1.000000, Current = 0.004574 (0), Stop = 2592000.000000, Last = 0
+DATA dump: ./DD0000/DD
+WriteAllData: writing group file ./DD0000/DD0000.cpu0000
+DATA dump: dumpdirname=(./DD0000) == unixresult=0
+CombineGrids: NewDims = 11 11 77
+RebuildHierarchy: level = 0
+CommunicationTransferParticles: moved = 0
+CommunicationTransferStars: moved = 0
+CommunicationTransferActiveParticles: moved = 0
+grid:SetNumberOfColours: NEQ_HYDRO = 6, NSpecies = 6, NColor = 0
+Level[0]: dt = 0.000777995  0.000777995 (0.000777995/0.000777995)
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+kphHINum = 0
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 5 in communicator MPI_COMM_WORLD 
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------

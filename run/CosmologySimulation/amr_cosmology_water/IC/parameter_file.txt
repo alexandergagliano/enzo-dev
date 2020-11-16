@@ -1,0 +1,43 @@
+# Relevant Section of Enzo Paramter File (NOT COMPLETE!) 
+ProblemType                              = 30      // cosmology simulation
+TopGridRank                              = 3
+TopGridDimensions                        = 32 32 32
+SelfGravity                              = 1       // gravity on
+TopGridGravityBoundary                   = 0       // Periodic BC for gravity
+LeftFaceBoundaryCondition                = 3 3 3   // same for fluid
+RightFaceBoundaryCondition               = 3 3 3
+RefineBy                                 = 2
+
+#
+CosmologySimulationOmegaBaryonNow        = 0.0441
+CosmologySimulationOmegaCDMNow           = 0.2239
+CosmologySimulationDensityName           = GridDensity
+CosmologySimulationVelocity1Name         = GridVelocities_x
+CosmologySimulationVelocity2Name         = GridVelocities_y
+CosmologySimulationVelocity3Name         = GridVelocities_z
+CosmologySimulationCalculatePositions    = 1
+CosmologySimulationParticleVelocity1Name = ParticleVelocities_x
+CosmologySimulationParticleVelocity2Name = ParticleVelocities_y
+CosmologySimulationParticleVelocity3Name = ParticleVelocities_z
+CosmologySimulationParticleDisplacement1Name = ParticleDisplacements_x
+CosmologySimulationParticleDisplacement2Name = ParticleDisplacements_y
+CosmologySimulationParticleDisplacement3Name = ParticleDisplacements_z
+
+#
+#  define cosmology parameters
+#
+ComovingCoordinates                      = 1       // Expansion ON
+CosmologyOmegaMatterNow                  = 0.268
+CosmologyOmegaLambdaNow                  = 0.732
+CosmologyHubbleConstantNow               = 0.704     // in 100 km/s/Mpc
+CosmologyComovingBoxSize                 = 32    // in Mpc/h
+CosmologyMaxExpansionRate                = 0.015   // maximum allowed delta(a)/a
+CosmologyInitialRedshift                 = 50      //
+CosmologyFinalRedshift                   = 0       //
+GravitationalConstant                    = 1       // this must be true for cosmology
+#
+#
+ParallelRootGridIO                       = 1
+ParallelParticleIO                       = 1
+PartitionNestedGrids                     = 1
+CosmologySimulationNumberOfInitialGrids  = 1

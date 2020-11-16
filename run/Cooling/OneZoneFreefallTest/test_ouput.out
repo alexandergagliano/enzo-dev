@@ -1,0 +1,37 @@
+App launch reported: 1 (out of 1) daemons - 16 (out of 16) procs
+MPI_Init: NumberOfProcessors = 16
+InitializeRateData: NumberOfTemperatureBins = 600
+InitializeRateData: RadiationFieldType = 0
+Initialdt in ReadParameterFile = 0.000000e+00
+InitializeNew: Starting problem initialization.
+Initialize Exterior
+ExtBndry: BoundaryRank = 2
+ExtBndry: GridDimension = 9 9 
+ExtBndry: NumberOfBaryonFields = 15
+InitializeNew: Initial grid hierarchy set
+InitializeNew: Partition Initial Grid 0
+Enter CommunicationPartitionGrid.
+PartitionGrid (on all processors): Layout = 4 4 1
+NumberOfNewGrids = 16
+GridDims[0]:  0 2 0 1
+GridDims[1]:  0 2 0 1
+GridDims[2]:  1
+StartIndex[0]:  0 0 2 2
+StartIndex[1]:  0 0 2 2
+StartIndex[2]:  0
+Call ZeroSUS on TopGrid
+Grid structure: 6376
+SubGrids structure: 102016
+Re-set Unigrid = 0
+Grid distribution
+Delete OldGrid
+OldGrid deleted
+Exit CommunicationPartitionGrid.
+InitializeNew: Finished problem initialization.
+CPUTime-output: Frac = 1.000000, Current = 3.40003e-05 (0), Stop = 2592000.000000, Last = 0
+DATA dump: ./DD0000/DD
+WriteAllData: writing group file ./DD0000/DD0000.cpu0000
+DATA dump: dumpdirname=(./DD0000) == unixresult=0
+--------------------------------------------------------------------------
+mpirun noticed that process rank 3 with PID 19476 on node gr0785 exited on signal 6 (Aborted).
+--------------------------------------------------------------------------

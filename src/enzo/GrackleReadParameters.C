@@ -155,6 +155,9 @@ int GrackleReadParameters(FILE *fptr, FLOAT InitTime)
     ret += sscanf(line, "dust_chemistry = %d",
                   &grackle_data->dust_chemistry);
 
+    ret += sscanf(line, "UVbackground_molec_redshift_on = %d",
+                  &grackle_data->UVbackground_molec_redshift_on);
+
     /* functionality for below two are not yet implemented but are
        involved in options for other Grackle settings. Read in
        here to do error checking to make sure these are not used */

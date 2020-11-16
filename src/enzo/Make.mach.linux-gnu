@@ -41,7 +41,7 @@ MACH_FILE  = Make.mach.linux-gnu
 #LOCAL_HYPRE_INSTALL   = /PATH/TO/HYPRE/INSTALL   # optional
 LOCAL_HDF5_INSTALL = /usr
 #LOCAL_HDF5_INSTALL = /usr/lib64
-LOCAL_GRACKLE_INSTALL = /home/alexgagliano/Downloads/grackle_converted
+LOCAL_GRACKLE_INSTALL = /lustre/scratch3/turquoise/agagliano/WATER/summer2020
 LOCAL_HYPRE_INSTALL = /usr
 
 #-----------------------------------------------------------------------
@@ -80,8 +80,8 @@ MACH_DEFINES   = -DLINUX -DH5_USE_16_API
 MACH_CPPFLAGS = -P -traditional 
 MACH_CFLAGS   =
 MACH_CXXFLAGS =
-MACH_FFLAGS   = -fno-second-underscore -ffixed-line-length-132 -fallow-argument-mismatch
-MACH_F90FLAGS = -fno-second-underscore -fallow-argument-mismatch
+MACH_FFLAGS   = -fno-second-underscore -ffixed-line-length-132
+MACH_F90FLAGS = -fno-second-underscore
 MACH_LDFLAGS  = 
 
 #-----------------------------------------------------------------------
@@ -113,7 +113,7 @@ MACH_INCLUDES_GRACKLE  = $(LOCAL_INCLUDES_GRACKLE)
 # Libraries
 #-----------------------------------------------------------------------
 
-LOCAL_LIBS_MPI    = # MPI libraries
+LOCAL_LIBS_MPI    = #MPI libraries
 LOCAL_LIBS_HDF5   = -L$(LOCAL_HDF5_INSTALL)/lib -lhdf5 -lz
 LOCAL_LIBS_HYPRE  = -L$(LOCAL_HYPRE_INSTALL)/lib -lHYPRE
 LOCAL_LIBS_PAPI   = # PAPI libraries

@@ -1,0 +1,117 @@
+2020-11-02 19:58:45
+
+The Grackle Version 3.2.dev2
+Git Branch   master
+Git Revision 6bbec74a2a7aa2c0c61b1d05dd5e46890737f2c1
+
+Grackle build options:
+
+   MACHINE: Use apt-get to install csh libhdf5-serial-dev gfortran gsl-devel
+   MACHINE-NAME: linux-gnu
+
+   CONFIG_PRECISION  [precision-{32,64}]                     : 64
+   CONFIG_OPT  [opt-{warn,debug,high,aggressive}]            : high
+   CONFIG_OMP  [omp-{on,off}]                                : off
+
+Grackle build flags:
+
+Usage: which [options] [--] COMMAND [...]
+Write the full path of COMMAND(s) to standard output.
+
+  --version, -[vV] Print version and exit successfully.
+  --help,          Print this help and exit successfully.
+  --skip-dot       Skip directories in PATH that start with a dot.
+  --skip-tilde     Skip directories in PATH that start with a tilde.
+  --show-dot       Don't expand a dot to current directory in output.
+  --show-tilde     Output a tilde for HOME directory for non-root.
+  --tty-only       Stop processing options on the right if not on tty.
+  --all, -a        Print all matches in PATH, not just the first
+  --read-alias, -i Read list of aliases from stdin.
+  --skip-alias     Ignore option --read-alias; don't read stdin.
+  --read-functions Read shell functions from stdin.
+  --skip-functions Ignore option --read-functions; don't read stdin.
+
+Recommended use is to write the output of (alias; declare -f) to standard
+input, so that which can show aliases and shell functions. See which(1) for
+examples.
+
+If the options --read-alias and/or --read-functions are specified then the
+output can be a full alias or function definition, optionally followed by
+the full path of each command used inside of those.
+
+Report bugs to <which-bugs@gnu.org>.
+CPP = 
+CC  = /usr/projects/hpcsoft/toss3/common/x86_64/gcc/5.3.0/bin/gcc
+CXX = /usr/projects/hpcsoft/toss3/common/x86_64/gcc/5.3.0/bin/g++
+FC  = /usr/projects/hpcsoft/toss3/common/x86_64/gcc/5.3.0/bin/gfortran
+F90 = /usr/projects/hpcsoft/toss3/common/x86_64/gcc/5.3.0/bin/gfortran
+LD  = /usr/projects/hpcsoft/toss3/common/x86_64/gcc/5.3.0/bin/gcc
+LIBTOOL = /usr/bin/libtool
+
+DEFINES = -DLINUX -DH5_USE_16_API -fPIC  -DCONFIG_BFLOAT_8
+
+INCLUDES = -I/usr/include     -I.
+
+CPPFLAGS = -P -traditional
+CFLAGS   =  -O2 
+CXXFLAGS =  -O2 
+FFLAGS   = -fno-second-underscore -ffixed-line-length-132  -O2 
+F90FLAGS = -fno-second-underscore -O2 
+LDFLAGS  = -lm -lgsl -lgslcblas -lgfortran 
+
+LIBS     = -L/usr/lib -lhdf5 -lz  -lgfortran 
+
+Grackle run-time parameters:
+use_grackle                       = 1
+with_radiative_cooling            = 1
+primordial_chemistry              = 2
+dust_chemistry                    = 1
+metal_cooling                     = 1
+UVbackground                      = 1
+grackle_data_file                 = /usr/projects/cosmology/grizzly_gcc5.3_openmpi1.10.5/grackle/input/CloudyData_UVB=HM2012_shielded.h5
+cmb_temperature_floor             = 1
+Gamma                             = 1.6667
+h2_on_dust                        = 1
+use_dust_density_field            = 0
+photoelectric_heating             = 0
+photoelectric_heating_rate        = 8.5e-26
+use_isrf_field                    = 0
+interstellar_radiation_field      = 1.7
+use_volumetric_heating_rate       = 0
+use_specific_heating_rate         = 0
+three_body_rate                   = 0
+cie_cooling                       = 0
+h2_optical_depth_approximation    = 0
+ih2co                             = 1
+ipiht                             = 1
+HydrogenFractionByMass            = 0.76
+DeuteriumToHydrogenRatio          = 6.8e-05
+SolarMetalFractionByMass          = 0.01295
+local_dust_to_gas_ratio           = 0.009387
+NumberOfTemperatureBins           = 600
+CaseBRecombination                = 0
+TemperatureStart                  = 1
+TemperatureEnd                    = 1e+09
+NumberOfDustTemperatureBins       = 250
+DustTemperatureStart              = 1
+DustTemperatureEnd                = 1500
+Compton_xray_heating              = 0
+LWbackground_sawtooth_suppression = 0
+LWbackground_intensity            = 0
+UVbackground_redshift_on          = 7
+UVbackground_redshift_off         = 0
+UVbackground_redshift_fullon      = 6
+UVbackground_redshift_drop        = 0
+cloudy_electron_fraction_factor   = 0.00915396
+use_radiative_transfer            = 1
+radiative_transfer_coupled_rate_solver = 0
+radiative_transfer_intermediate_step = 0
+radiative_transfer_hydrogen_only  = 0
+self_shielding_method             = 0
+H2_self_shielding                 = 0
+withWater                         = 1
+water_rates                       = 3
+crx_ionization                    = 1
+grackle_molecular_data            = /lustre/scratch3/turquoise/agagliano/WATER/summer2020/fromSky/grackle/input/UVB_HM2012_waterNetwork.h5
+UVbackground_molec_redshift_on    = 0
+water_only                        = 0

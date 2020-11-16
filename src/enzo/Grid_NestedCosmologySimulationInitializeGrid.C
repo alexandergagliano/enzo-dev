@@ -429,6 +429,7 @@ int grid::NestedCosmologySimulationInitializeGrid(
         FieldType[COplusNum  = NumberOfBaryonFields++] = COplusDensity;
         FieldType[CO2Num     = NumberOfBaryonFields++] = CO2Density;
         if (water_rates == 3){
+
           FieldType[CHplusNum  = NumberOfBaryonFields++] = CHplusDensity;
           FieldType[CH2plusNum = NumberOfBaryonFields++] = CH2plusDensity;
           FieldType[H3plusNum  = NumberOfBaryonFields++] = H3plusDensity;
@@ -672,6 +673,7 @@ int grid::NestedCosmologySimulationInitializeGrid(
 	}
         if (withWater){
          if (MyProcessorNumber == ROOT_PROCESSOR) {printf("Initializing water chemistry fields.\n");}
+         for (i = 0; i < size; i++){
          BaryonField[WaterNum][i]   = tiny_number; // Set water to zero.
          BaryonField[ONum][i]       = tiny_number;
          BaryonField[OHNum][i]      = tiny_number;
@@ -691,7 +693,6 @@ int grid::NestedCosmologySimulationInitializeGrid(
          BaryonField[COplusNum][i]  = tiny_number;
          BaryonField[CO2Num][i]     = tiny_number;
          if (water_rates == 3){
-          printf("Initializaing Bialy water chemistry fields...\n");
           BaryonField[CHplusNum][i]  = tiny_number;
           BaryonField[CH2plusNum][i] = tiny_number;
           BaryonField[H3plusNum][i]  = tiny_number;
@@ -701,6 +702,7 @@ int grid::NestedCosmologySimulationInitializeGrid(
           BaryonField[CH4plusNum][i] = tiny_number;
           BaryonField[CH5plusNum][i] = tiny_number;
           BaryonField[O2HplusNum][i] = tiny_number;
+         }
          }
        }
 

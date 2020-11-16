@@ -1,0 +1,12 @@
+prefix=/lustre/scratch3/turquoise/agagliano/WATER/summer2020/fromSky/enzo-dev/run/Cooling/yt-conda
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+enginesdir=${libdir}/engines-1.1
+
+Name: OpenSSL-libcrypto
+Description: OpenSSL cryptography library
+Version: 1.1.1h
+Libs: -L${libdir} -lcrypto
+Libs.private: -ldl -pthread 
+Cflags: -I${includedir}

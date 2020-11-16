@@ -1,0 +1,15 @@
+{
+  "arch": "x86_64",
+  "build": "py38h924ce5b_2",
+  "build_number": 2,
+  "depends": [
+    "python >=3.8,<3.9.0a0",
+    "python_abi 3.8.* *_cp38"
+  ],
+  "license": "ISC",
+  "name": "certifi",
+  "platform": "linux",
+  "subdir": "linux-64",
+  "timestamp": 1602221927159,
+  "version": "2020.6.20"
+}

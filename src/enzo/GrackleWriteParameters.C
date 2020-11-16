@@ -53,6 +53,7 @@ int GrackleWriteParameters(FILE *fptr)
   fprintf(fptr, "water_only                  = %d\n", grackle_data->water_only);
   fprintf(fptr, "crx_ionization              = %d\n", grackle_data->crx_ionization);
   fprintf(fptr, "grackle_molecular_data      = %s\n", grackle_data->grackle_molecular_data);
+  fprintf(fptr, "UVbackground_molec_redshift_on = %d\n", grackle_data->UVbackground_molec_redshift_on);
 
 #endif
 

@@ -30,7 +30,7 @@
 #endif
 #include "CosmologyParameters.h"
 
-#define DEBUG 0
+#define DEBUG 1
 void CollectParticleTypes(char **active_particle_types, int numparticles);
 
 int ActiveParticleFinalize(HierarchyEntry *Grids[], TopGridData *MetaData,
@@ -157,14 +157,15 @@ int ConvertParticles2ActiveParticles(char *ParameterFile,
     printf("%s: Number of particles found = %d\n", __FUNCTION__, global_active_particles);
 #endif
 
+//Alex Gagliano REMOVE LATER
 #if DEBUG
   /* Now lets collect up the active particle types */
-  //CollectParticleTypes(active_particle_types, global_active_particles);
-  //if(MyProcessorNumber == ROOT_PROCESSOR)    {
-  // for(int i = 0; i < global_active_particles; i++)
-  //   fprintf(stdout, "P%d: particle type[%d] =  %s\n", MyProcessorNumber, 
-  //	      i, active_particle_types[i]);
-  //}
+  CollectParticleTypes(active_particle_types, global_active_particles);
+  if(MyProcessorNumber == ROOT_PROCESSOR)    {
+   for(int i = 0; i < global_active_particles; i++)
+     fprintf(stdout, "P%d: particle type[%d] =  %s\n", MyProcessorNumber, 
+  	      i, active_particle_types[i]);
+  }
 #endif
   /* Copy the active particle names into the arrays mapped from the particle numbers */
   for(int i = 0; i < MAX_ACTIVE_PARTICLE_TYPES; i++) {

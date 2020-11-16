@@ -156,8 +156,8 @@ int RadiativeTransferReadParameters(FILE *fptr)
 		  &RadiativeTransferRayMaximumLength);
     ret += sscanf(line, "RadiativeTransferHubbleTimeFraction = %"FSYM, 
 		  &RadiativeTransferHubbleTimeFraction);
-    if (sscanf(line, "RadiativeTransferTraceSpectrumTable = %s", dummy) == 1)
-      RadiativeTransferTraceSpectrumTable = dummy;  
+//    if (sscanf(line, "RadiativeTransferTraceSpectrumTable = %s", dummy) == 1)
+//      RadiativeTransferTraceSpectrumTable = dummy;  
     ret += sscanf(line, "dtPhoton = %"FSYM, &dtPhoton);
 
     /* If the dummy char space was used, then make another. */

@@ -120,6 +120,12 @@ int grid::CosmologySimulationInitializeGrid(
   int idim, dim, i, j, vel, OneComponentPerFile, ndim, level;
   int DeNum, HINum, HIINum, HeINum, HeIINum, HeIIINum, HMNum, H2INum, H2IINum,
     DINum, DIINum, HDINum, MetalNum, MetalIaNum;
+  int WaterNum, ONum, OHNum, O2Num, OplusNum, OHplusNum, H2OplusNum, H3OplusNum, O2plusNum,
+      CplusNum, CNum, CHNum, CH2Num, CH3Num, CH4Num, CONum, COplusNum, CO2Num, SNum, SplusNum,
+      CHplusNum, CH2plusNum, H3plusNum, HCOplusNum, HeHplusNum, CH3plusNum, CH4plusNum, CH5plusNum,
+      O2HplusNum;
+
+
 #ifdef TRANSFER
   int EgNum;
 #endif
@@ -295,6 +301,39 @@ int grid::CosmologySimulationInitializeGrid(
 	FieldType[ExtraField[1] = NumberOfBaryonFields++] = ExtraType1;
       }
     }
+    if (withWater){
+      /* Adding Omukai (2005) water chemistry fields */
+      if (MyProcessorNumber == ROOT_PROCESSOR) {printf("\t /* Adding water chemistry fields. */\n");}
+        FieldType[WaterNum   = NumberOfBaryonFields++] = WaterDensity;
+        FieldType[ONum       = NumberOfBaryonFields++] = ODensity;
+        FieldType[OHNum      = NumberOfBaryonFields++] = OHDensity;
+        FieldType[O2Num      = NumberOfBaryonFields++] = O2Density;
+        FieldType[OplusNum   = NumberOfBaryonFields++] = OplusDensity;
+        FieldType[OHplusNum  = NumberOfBaryonFields++] = OHplusDensity;
+        FieldType[H2OplusNum = NumberOfBaryonFields++] = H2OplusDensity;
+        FieldType[H3OplusNum = NumberOfBaryonFields++] = H3OplusDensity;
+        FieldType[O2plusNum  = NumberOfBaryonFields++] = O2plusDensity;
+        FieldType[CplusNum   = NumberOfBaryonFields++] = CplusDensity;
+        FieldType[CNum       = NumberOfBaryonFields++] = CDensity;
+        FieldType[CHNum      = NumberOfBaryonFields++] = CHDensity;
+        FieldType[CH2Num     = NumberOfBaryonFields++] = CH2Density;
+        FieldType[CH3Num     = NumberOfBaryonFields++] = CH3Density;
+        FieldType[CH4Num     = NumberOfBaryonFields++] = CH4Density;
+        FieldType[CONum      = NumberOfBaryonFields++] = CODensity;
+        FieldType[COplusNum  = NumberOfBaryonFields++] = COplusDensity;
+        FieldType[CO2Num     = NumberOfBaryonFields++] = CO2Density;
+        if (water_rates == 3){
+          FieldType[CHplusNum  = NumberOfBaryonFields++] = CHplusDensity;
+          FieldType[CH2plusNum = NumberOfBaryonFields++] = CH2plusDensity;
+          FieldType[H3plusNum  = NumberOfBaryonFields++] = H3plusDensity;
+          FieldType[HCOplusNum = NumberOfBaryonFields++] = HCOplusDensity;
+          FieldType[HeHplusNum = NumberOfBaryonFields++] = HeHplusDensity;
+          FieldType[CH3plusNum = NumberOfBaryonFields++] = CH3plusDensity;
+          FieldType[CH4plusNum = NumberOfBaryonFields++] = CH4plusDensity;
+          FieldType[CH5plusNum = NumberOfBaryonFields++] = CH5plusDensity;
+          FieldType[O2HplusNum = NumberOfBaryonFields++] = O2HplusDensity;
+     }
+  }
     if(STARMAKE_METHOD(COLORED_POP3_STAR)){
       fprintf(stderr, "Initializing Forbidden Refinement color field\n");
       FieldType[ForbidNum = NumberOfBaryonFields++] = ForbiddenRefinement;
@@ -524,7 +563,40 @@ int grid::CosmologySimulationInitializeGrid(
 	  * BaryonField[0][i];
       }
     }
-
+        if (withWater){
+         if (MyProcessorNumber == ROOT_PROCESSOR) {printf("Initializing water chemistry fields.\n");}
+         for (i = 0; i < size; i++){
+         BaryonField[WaterNum][i]   = tiny_number; // Set water to zero.
+         BaryonField[ONum][i]       = tiny_number;
+         BaryonField[OHNum][i]      = tiny_number;
+         BaryonField[O2Num][i]      = tiny_number;
+         BaryonField[OplusNum][i]   = tiny_number;
+         BaryonField[OHplusNum][i]  = tiny_number;
+         BaryonField[H2OplusNum][i] = tiny_number;
+         BaryonField[H3OplusNum][i] = tiny_number;
+         BaryonField[O2plusNum][i]  = tiny_number;
+         BaryonField[CplusNum][i]   = tiny_number;
+         BaryonField[CNum][i]       = tiny_number;
+         BaryonField[CHNum][i]      = tiny_number;
+         BaryonField[CH2Num][i]     = tiny_number;
+         BaryonField[CH3Num][i]     = tiny_number;
+         BaryonField[CH4Num][i]     = tiny_number;
+         BaryonField[CONum][i]      = tiny_number;
+         BaryonField[COplusNum][i]  = tiny_number;
+         BaryonField[CO2Num][i]     = tiny_number;
+         if (water_rates == 3){
+          BaryonField[CHplusNum][i]  = tiny_number;
+          BaryonField[CH2plusNum][i] = tiny_number;
+          BaryonField[H3plusNum][i]  = tiny_number;
+          BaryonField[HCOplusNum][i] = tiny_number;
+          BaryonField[HeHplusNum][i] = tiny_number;
+          BaryonField[CH3plusNum][i] = tiny_number;
+          BaryonField[CH4plusNum][i] = tiny_number;
+          BaryonField[CH5plusNum][i] = tiny_number;
+          BaryonField[O2HplusNum][i] = tiny_number;
+         }
+         }
+       }
     if (STARMAKE_METHOD(COLORED_POP3_STAR) && ReadData) {
       for (i = 0; i < size; i++)
         BaryonField[ForbidNum][i] = 0.0;

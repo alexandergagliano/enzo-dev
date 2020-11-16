@@ -1,0 +1,219 @@
+17:33:09 | info    | Opening log file 'amr_cosmology.conf_log.txt'.
+17:33:09 | info    | Running music!, version 1.53
+17:33:09 | info    | Log is for run started Tue Oct 27 17:33:09 2020 
+17:33:09 | info    | Code was compiled using FFTW version 3.x
+17:33:09 | info    | Code was compiled for multi-threaded FFTW
+17:33:09 | info    | Running with a maximum of 36 OpenMP threads
+17:33:09 | info    | Code was compiled for double precision.
+17:33:09 | info    | Using k-space sampled transfer functions...
+17:33:09 | info    | Selecting transfer function plug-in  : eisenstein
+17:33:09 | info    | Selecting region generator plug-in  : box
+17:33:09 | info    | Selecting random number generator plug-in  : MUSIC
+17:33:09 | info    | Grid structure for Poisson solver:
+17:33:09 | info    |    Domain shifted by      (    0,    0,    0)
+17:33:09 | info    |    Level   5 :   offset = (    0,    0,    0)
+17:33:09 | info    |                    size = (   32,   32,   32)
+17:33:09 | info    | Grid structure for density convolution:
+17:33:09 | info    |    Domain shifted by      (    0,    0,    0)
+17:33:09 | info    |    Level   5 :   offset = (    0,    0,    0)
+17:33:09 | info    |                    size = (   32,   32,   32)
+17:33:09 | warning | Old ENZO versions may require 'align_top=true'!
+17:33:09 | info    | Computing white noise...
+17:33:09 | info    | Found 0 density constraint(s) to be obeyed.
+17:33:09 | info    | Generating random numbers (2) with seed 8675309
+17:33:09 | info    | Generating random numbers w/ sample cube size of 32
+17:33:09 | info    | Storing white noise field in file 'wnoise_0005.bin'...
+17:33:09 | info    | Entering 2LPT branch
+17:33:09 | info    | Computing velocities...
+17:33:09 | info    | Using k-space transfer function kernel.
+17:33:09 | info    | Performing noise convolution on level   5
+17:33:09 | info    | Loading white noise from file 'wnoise_0005.bin'...
+17:33:09 | info    | Performing kernel convolution on (   32,   32,   32) grid
+17:33:09 | info    | Performing forward FFT...
+17:33:09 | info    | Performing backward FFT...
+17:33:09 | info    | Finished computing the density field in 0.172542s
+17:33:09 | info    | Grid mean density is 3.11261e-322. Correcting...
+17:33:09 | info    | Initializing multi-grid Poisson solver...
+17:33:09 | info    | Selected Gauss-Seidel multigrid smoother
+17:33:09 | info    | Running multigrid solver with 6th order Laplacian..
+17:33:09 | info    | Performing multi-grid V-cycle...
+17:33:09 | debug   | [mg]      level   5,  residual 3.16306e-07,  rel. error 0.0531561
+17:33:09 | info    | Performing multi-grid V-cycle...
+17:33:10 | debug   | [mg]      level   5,  residual 2.20051e-08,  rel. error 0.0016673
+17:33:10 | info    | Performing multi-grid V-cycle...
+17:33:10 | debug   | [mg]      level   5,  residual 2.7233e-09,  rel. error 0.000179592
+17:33:10 | info    | Performing multi-grid V-cycle...
+17:33:10 | debug   | [mg]      level   5,  residual 2.0199e-10,  rel. error 2.22809e-05
+17:33:10 | info    | Performing multi-grid V-cycle...
+17:33:11 | debug   | [mg]      level   5,  residual 1.98191e-11,  rel. error 7.93284e-06
+17:33:11 | info    | Poisson solver converged to max. error of 7.93284e-06 in 5 steps.
+17:33:11 | info    | Computing 2LPT term....
+17:33:11 | info    | Solving 2LPT Poisson equation
+17:33:11 | info    | Initializing multi-grid Poisson solver...
+17:33:11 | info    | Selected Gauss-Seidel multigrid smoother
+17:33:11 | info    | Running multigrid solver with 6th order Laplacian..
+17:33:11 | info    | Performing multi-grid V-cycle...
+17:33:11 | debug   | [mg]      level   5,  residual 4.15039e-09,  rel. error 0.0816348
+17:33:11 | info    | Performing multi-grid V-cycle...
+17:33:11 | debug   | [mg]      level   5,  residual 2.75578e-10,  rel. error 0.00414718
+17:33:11 | info    | Performing multi-grid V-cycle...
+17:33:12 | debug   | [mg]      level   5,  residual 2.10898e-11,  rel. error 0.000645452
+17:33:12 | info    | Performing multi-grid V-cycle...
+17:33:12 | debug   | [mg]      level   5,  residual 1.81531e-12,  rel. error 3.73925e-05
+17:33:12 | info    | Performing multi-grid V-cycle...
+17:33:12 | debug   | [mg]      level   5,  residual 1.85871e-13,  rel. error 4.67053e-06
+17:33:12 | info    | Poisson solver converged to max. error of 4.67053e-06 in 5 steps.
+17:33:12 | info    | Computing a 6th order finite difference gradient...
+17:33:12 | info    | Done computing a 6th order finite difference gradient.
+17:33:12 | info    | Writing CDM velocities
+17:33:12 | info    | Writing baryon velocities
+17:33:12 | info    | Computing a 6th order finite difference gradient...
+17:33:12 | info    | Done computing a 6th order finite difference gradient.
+17:33:12 | info    | Writing CDM velocities
+17:33:13 | info    | Writing baryon velocities
+17:33:13 | info    | Computing a 6th order finite difference gradient...
+17:33:13 | info    | Done computing a 6th order finite difference gradient.
+17:33:13 | info    | Writing CDM velocities
+17:33:13 | info    | Writing baryon velocities
+17:33:13 | info    | Computing dark matter displacements...
+17:33:13 | info    | Using k-space transfer function kernel.
+17:33:13 | info    | Performing noise convolution on level   5
+17:33:13 | info    | Loading white noise from file 'wnoise_0005.bin'...
+17:33:13 | info    | Performing kernel convolution on (   32,   32,   32) grid
+17:33:13 | info    | Performing forward FFT...
+17:33:13 | info    | Performing backward FFT...
+17:33:13 | info    | Finished computing the density field in 0.156380s
+17:33:13 | info    | Grid mean density is 3.11261e-322. Correcting...
+17:33:13 | info    | Writing CDM data
+17:33:13 | info    | Global density extrema: 
+17:33:13 | info    |   minimum: delta=-0.343996 at (0.265625,0.109375,0.765625)
+17:33:13 | info    |        shifted back at (0.265625,0.109375,0.765625)
+17:33:13 | info    |   maximum: delta=0.292059 at (0.609375,0.671875,0.578125)
+17:33:13 | info    |        shifted back at (0.609375,0.671875,0.578125)
+17:33:13 | info    | Initializing multi-grid Poisson solver...
+17:33:13 | info    | Selected Gauss-Seidel multigrid smoother
+17:33:13 | info    | Running multigrid solver with 6th order Laplacian..
+17:33:13 | info    | Performing multi-grid V-cycle...
+17:33:14 | debug   | [mg]      level   5,  residual 2.95651e-07,  rel. error 0.0431381
+17:33:14 | info    | Performing multi-grid V-cycle...
+17:33:14 | debug   | [mg]      level   5,  residual 2.3202e-08,  rel. error 0.00167623
+17:33:14 | info    | Performing multi-grid V-cycle...
+17:33:14 | debug   | [mg]      level   5,  residual 1.78623e-09,  rel. error 0.000218536
+17:33:14 | info    | Performing multi-grid V-cycle...
+17:33:15 | debug   | [mg]      level   5,  residual 2.22402e-10,  rel. error 2.29777e-05
+17:33:15 | info    | Performing multi-grid V-cycle...
+17:33:15 | debug   | [mg]      level   5,  residual 2.02313e-11,  rel. error 8.05755e-06
+17:33:15 | info    | Poisson solver converged to max. error of 8.05755e-06 in 5 steps.
+17:33:15 | info    | Initializing multi-grid Poisson solver...
+17:33:15 | info    | Selected Gauss-Seidel multigrid smoother
+17:33:15 | info    | Running multigrid solver with 6th order Laplacian..
+17:33:15 | info    | Performing multi-grid V-cycle...
+17:33:15 | debug   | [mg]      level   5,  residual 4.31335e-09,  rel. error 0.100377
+17:33:15 | info    | Performing multi-grid V-cycle...
+17:33:16 | debug   | [mg]      level   5,  residual 2.53344e-10,  rel. error 0.00404385
+17:33:16 | info    | Performing multi-grid V-cycle...
+17:33:16 | debug   | [mg]      level   5,  residual 2.17309e-11,  rel. error 0.00058269
+17:33:16 | info    | Performing multi-grid V-cycle...
+17:33:16 | debug   | [mg]      level   5,  residual 2.4919e-12,  rel. error 3.65611e-05
+17:33:16 | info    | Performing multi-grid V-cycle...
+17:33:17 | debug   | [mg]      level   5,  residual 1.68532e-13,  rel. error 5.37199e-06
+17:33:17 | info    | Poisson solver converged to max. error of 5.37199e-06 in 5 steps.
+17:33:17 | info    | Computing a 6th order finite difference gradient...
+17:33:17 | info    | Done computing a 6th order finite difference gradient.
+17:33:17 | info    | max. x-displacement of HR particles is 0.196380 [mean dx]
+17:33:17 | info    | Writing CDM displacements
+17:33:17 | info    | Computing a 6th order finite difference gradient...
+17:33:17 | info    | Done computing a 6th order finite difference gradient.
+17:33:17 | info    | max. y-displacement of HR particles is -0.258007 [mean dx]
+17:33:17 | info    | Writing CDM displacements
+17:33:17 | info    | Computing a 6th order finite difference gradient...
+17:33:17 | info    | Done computing a 6th order finite difference gradient.
+17:33:17 | info    | max. z-displacement of HR particles is 0.236294 [mean dx]
+17:33:17 | info    | Writing CDM displacements
+17:33:17 | info    | Computing baryon density...
+17:33:17 | info    | Using k-space transfer function kernel.
+17:33:17 | info    | Performing noise convolution on level   5
+17:33:17 | info    | Loading white noise from file 'wnoise_0005.bin'...
+17:33:17 | info    | Performing kernel convolution on (   32,   32,   32) grid
+17:33:17 | info    | Performing forward FFT...
+17:33:17 | info    | Performing backward FFT...
+17:33:17 | info    | Finished computing the density field in 0.123823s
+17:33:17 | info    | Grid mean density is 3.11261e-322. Correcting...
+17:33:17 | info    | Initializing multi-grid Poisson solver...
+17:33:17 | info    | Selected Gauss-Seidel multigrid smoother
+17:33:17 | info    | Running multigrid solver with 6th order Laplacian..
+17:33:17 | info    | Performing multi-grid V-cycle...
+17:33:18 | debug   | [mg]      level   5,  residual 2.83936e-07,  rel. error 0.0707286
+17:33:18 | info    | Performing multi-grid V-cycle...
+17:33:18 | debug   | [mg]      level   5,  residual 1.33186e-08,  rel. error 0.001675
+17:33:18 | info    | Performing multi-grid V-cycle...
+17:33:18 | debug   | [mg]      level   5,  residual 1.78268e-09,  rel. error 0.000247025
+17:33:18 | info    | Performing multi-grid V-cycle...
+17:33:19 | debug   | [mg]      level   5,  residual 1.84867e-10,  rel. error 2.38885e-05
+17:33:19 | info    | Performing multi-grid V-cycle...
+17:33:19 | debug   | [mg]      level   5,  residual 1.71478e-11,  rel. error 8.3177e-06
+17:33:19 | info    | Poisson solver converged to max. error of 8.3177e-06 in 5 steps.
+17:33:19 | info    | Initializing multi-grid Poisson solver...
+17:33:19 | info    | Selected Gauss-Seidel multigrid smoother
+17:33:19 | info    | Running multigrid solver with 6th order Laplacian..
+17:33:19 | info    | Performing multi-grid V-cycle...
+17:33:19 | debug   | [mg]      level   5,  residual 3.66769e-09,  rel. error 0.0784437
+17:33:19 | info    | Performing multi-grid V-cycle...
+17:33:20 | debug   | [mg]      level   5,  residual 2.52922e-10,  rel. error 0.0047174
+17:33:20 | info    | Performing multi-grid V-cycle...
+17:33:20 | debug   | [mg]      level   5,  residual 2.07768e-11,  rel. error 0.000950585
+17:33:20 | info    | Performing multi-grid V-cycle...
+17:33:20 | debug   | [mg]      level   5,  residual 1.96558e-12,  rel. error 3.60905e-05
+17:33:20 | info    | Performing multi-grid V-cycle...
+17:33:21 | debug   | [mg]      level   5,  residual 2.17684e-13,  rel. error 5.46778e-06
+17:33:21 | info    | Poisson solver converged to max. error of 5.46778e-06 in 5 steps.
+17:33:21 | info    | Grid mean density is 3.0138e-322. Correcting...
+17:33:21 | info    | Writing baryon density
+17:33:21 | info    | Wrote output file 'IC'.
+17:33:21 | info    | Run finished succesfully on Tue Oct 27 17:33:21 2020 
+17:33:21 | info    | List of all configuration options:
+17:33:21 | info    |               cosmology/H0 = 70.4
+17:33:21 | info    |          cosmology/Omega_L = 0.732
+17:33:21 | info    |          cosmology/Omega_b = 0.0441
+17:33:21 | info    |          cosmology/Omega_m = 0.268
+17:33:21 | info    |            cosmology/dplus = 0.0258447049573
+17:33:21 | info    |            cosmology/nspec = 0.9632
+17:33:21 | info    |            cosmology/pnorm = 11.3114308346
+17:33:21 | info    |          cosmology/sigma_8 = 0.828
+17:33:21 | info    |         cosmology/transfer = eisenstein
+17:33:21 | info    |            cosmology/vfact = 369.702237186
+17:33:21 | info    |            output/filename = IC
+17:33:21 | info    |              output/format = enzo
+17:33:21 | info    |           poisson/accuracy = 1e-5
+17:33:21 | info    |           poisson/fft_fine = no
+17:33:21 | info    |         poisson/grad_order = 6
+17:33:21 | info    |      poisson/laplace_order = 6
+17:33:21 | info    |        poisson/post_smooth = 3
+17:33:21 | info    |         poisson/pre_smooth = 3
+17:33:21 | info    |           poisson/smoother = gs
+17:33:21 | info    |            random/cubesize = 256
+17:33:21 | info    |             random/seed[5] = 8675309
+17:33:21 | info    |            setup/align_top = no
+17:33:21 | info    |              setup/baryons = yes
+17:33:21 | info    |            setup/boxlength = 32.
+17:33:21 | info    |           setup/center_vel = no
+17:33:21 | info    |            setup/kspace_TF = yes
+17:33:21 | info    |             setup/levelmax = 5
+17:33:21 | info    |             setup/levelmin = 5
+17:33:21 | info    |          setup/levelmin_TF = 5
+17:33:21 | info    |             setup/no_shift = yes
+17:33:21 | info    |          setup/offset(5,0) = 0
+17:33:21 | info    |          setup/offset(5,1) = 0
+17:33:21 | info    |          setup/offset(5,2) = 0
+17:33:21 | info    |              setup/overlap = 8
+17:33:21 | info    |              setup/padding = 4
+17:33:21 | info    |          setup/periodic_TF = yes
+17:33:21 | info    |              setup/shift_x = 0
+17:33:21 | info    |              setup/shift_y = 0
+17:33:21 | info    |              setup/shift_z = 0
+17:33:21 | info    |            setup/size(5,0) = 32
+17:33:21 | info    |            setup/size(5,1) = 32
+17:33:21 | info    |            setup/size(5,2) = 32
+17:33:21 | info    |             setup/use_2LPT = yes
+17:33:21 | info    |              setup/use_LLA = yes
+17:33:21 | info    |               setup/zstart = 50

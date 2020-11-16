@@ -17,6 +17,7 @@ struct TestProblemDataType
 
   /* Omukai (2005) water chemistry */
   int withWater;
+  int water_rates;
 
   // fractions in the interior (where the blast wave energy is injected)
   float HI_Fraction_Inner;
